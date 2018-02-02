@@ -54,7 +54,7 @@ class AzimuthDistanceCalculator:
 
         # Create the dialog (after translation) and keep reference
         self.dlg = AzimuthDistanceCalculatorDialog(self.iface)
-        
+
         # Obtaining the map canvas
         self.canvas = iface.mapCanvas()
 
@@ -71,7 +71,7 @@ class AzimuthDistanceCalculator:
         :rtype: QString
         """
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('azimuthdistancecalculator', message)        
+        return QCoreApplication.translate('azimuthdistancecalculator', message)
 
     def initGui(self):
         # Create action that will start plugin configuration
@@ -100,4 +100,4 @@ class AzimuthDistanceCalculator:
         if result == 1:
             # do something useful (delete the line containing pass and
             # substitute with your code)
-            pass                
+            pass
