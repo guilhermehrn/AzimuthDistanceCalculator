@@ -151,7 +151,7 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
         """
         decimalPlaces = self.spinBox.value()
         q = Decimal(10)**-decimalPlaces
-        
+
         distancesAndAzimuths = list()
         isValid = self.isValidType()
         if isValid:
@@ -210,4 +210,4 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
         degrees = str(int(degrees)) if is_positive else '-' + str(int(degrees))
         minutes = int(minutes)
 
-        return degrees + u"\u00b0" + str(minutes).zfill(2) + "'" + "%0.2f"%(seconds) + "''"        
+        return degrees + u"\u00b0" + str(minutes).zfill(2) + "'" + "%0.2f"%(seconds) + "''"
