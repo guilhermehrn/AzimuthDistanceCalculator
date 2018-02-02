@@ -48,6 +48,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         # Connecting SIGNAL/SLOTS for the Output button
         self.createButton.clicked.connect(self.createFiles)
+        self.closeButton.clicked.connect(self.closeWindows)
 
         self.convergenciaEdit.setText(convergence)
 
@@ -63,6 +64,11 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         folder = QFileDialog.getExistingDirectory(self, "Select Directory")
         self.folderEdit.setText(folder)
 
+
+    def closeWindows(self):
+        self.close()
+
+    #TODO rever esses Nomes de arquivos. Consultar a Jessica
     def copyAndRenameFiles(self):
         currentPath = os.path.dirname(__file__)
         templatePath = os.path.join(currentPath, "templates")
@@ -72,34 +78,81 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         seloTemplate = os.path.join(templatePath, "template_selo.txt")
         areaTemplate = os.path.join(templatePath, "template_area.txt")
 
+        # folder = self.folderEdit.text()
+        # if self.memorialSinteticHtml.isChecked():
+        #     self.simpleMemorial = os.path.join(folder, "sintetico.html")
+        # self.fullMemorial = os.path.join(folder, "analitico.txt")
+        # self.selo = os.path.join(folder, "selo.txt")
+        # self.area = os.path.join(folder, "area.txt")
+        #
+        # if self.memorialSinteticHtml.isChecked():
+        #     shutil.copy2(simpleMemorialTemplate, self.simpleMemorial)
+        # shutil.copy2(fullMemorialTemplate, self.fullMemorial)
+        # shutil.copy2(seloTemplate, self.selo)
+        # shutil.copy2(areaTemplate, self.area)
+        folder=''
         folder = self.folderEdit.text()
-        self.simpleMemorial = os.path.join(folder, "sintetico.html")
-        self.fullMemorial = os.path.join(folder, "analitico.txt")
-        self.selo = os.path.join(folder, "selo.txt")
-        self.area = os.path.join(folder, "area.txt")
+        if folder =='':
+            QMessageBox.information(self, self.tr('Attention!'), self.tr('A directory should be selected!'))
+        else:
 
-        shutil.copy2(simpleMemorialTemplate, self.simpleMemorial)
-        shutil.copy2(fullMemorialTemplate, self.fullMemorial)
-        shutil.copy2(seloTemplate, self.selo)
-        shutil.copy2(areaTemplate, self.area)
+            if self.memorialSinteticHtml.isChecked():
+                self.simpleMemorial = os.path.join(folder, "sintetico.html")
+                shutil.copy2(simpleMemorialTemplate, self.simpleMemorial)
+
+            if self.memorialDescritivoTxt.isChecked():
+                self.fullMemorial = os.path.join(folder, "analitico.txt")
+                shutil.copy2(fullMemorialTemplate, self.fullMemorial)
+
+            if self.seloTxt.isChecked():
+                self.selo = os.path.join(folder, "selo.txt")
+                shutil.copy2(seloTemplate, self.selo)
+
+            if self.tableAreaCsv.isChecked():
+                self.area = os.path.join(folder, "area.txt")
+                shutil.copy2(areaTemplate, self.area)
+
+
 
     def createFiles(self):
+
+
+        # self.copyAndRenameFiles()
+        #
+        # if self.memorialSinteticHtml.isChecked():
+        # if self.memorialDescritivoTxt.isChecked():
+        # if self.seloTxt.isChecked():
+        # if self.tableAreaCsv():
+        # self.createSelo()
+        #
+        # self.createFullMemorial()
+        # #guilherme
+        # self.createFullMemorialPdf()
+        #
+        # self.createArea()
+        #
+        # if self.memorialSinteticHtml.isChecked():
+        #     #print "aaa" + self.memorialSinteticHtml.isChecked()
+        #     self.createSimpleMemorial()
+        #
+        # self.createSimpleMemorialPdf()
         self.copyAndRenameFiles()
+        if self.memorialSinteticHtml.isChecked():
+            self.createSimpleMemorial()
 
-        self.createSelo()
+        if self.memorialDescritivoTxt.isChecked():
+            self.createFullMemorial()
 
-        self.createFullMemorial()
-        #guilherme
-        self.createFullMemorialpdf()
+        if self.seloTxt.isChecked():
+            self.createSelo()
 
-        self.createArea()
+        if self.tableAreaCsv.isChecked():
+            self.createArea()
 
-        self.createSimpleMemorial()
-        self.createSimpleMemorialPdf()
-
-
-
-        QMessageBox.information(self, self.tr('Information!'), self.tr('Files created successfully!'))
+        if not self.memorialSinteticHtml.isChecked() & self.memorialDescritivoTxt.isChecked() & self.seloTxt.isChecked() & self.tableAreaCsv.isChecked():
+            QMessageBox.information(self, self.tr('Attention!'), self.tr('Select at least one file type!'))
+        else:
+            QMessageBox.information(self, self.tr('Information!'), self.tr('Files created successfully!'))
 
     def createCellElement(self, tempDoc, text, colspan, rowspan):
         td = tempDoc.createElement("td")
@@ -271,7 +324,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         memorial.close()
 
     #guilherme: funcção para criar um memorial descritivo completo
-    def createSimpleMemorialPdf(self):
+    def createFullMemorialPdf(self):
         print 1
         #TODO
 
