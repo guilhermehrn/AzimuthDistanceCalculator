@@ -20,7 +20,15 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
+import os
+import sys
+stdlib_dir = os.path.dirname(os.__file__)
+print stdlib_dir
+real_distutils_path = sys.path
 
+__path__.append('C:\Users\09726968658\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\site-packages')
+#execfile(os.path.join(real_distutils_path, '__init__.py'))
+print __path__
 def classFactory(iface):
     # load AzimuthDistanceCalculator class from file AzimuthDistanceCalculator
     from azimuthdistancecalculator import AzimuthDistanceCalculator

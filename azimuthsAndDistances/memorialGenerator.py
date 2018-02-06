@@ -24,11 +24,12 @@ import os
 import time
 import sys
 
+
 from PyQt4 import uic
 from PyQt4.QtCore import QFile, QIODevice
 from PyQt4.QtGui import QFileDialog, QMessageBox, QDialog
 from PyQt4.QtXml import QDomDocument
-
+from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT, TA_RIGHT
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui_memorialGenerator.ui'))
 
@@ -112,6 +113,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                 self.area = os.path.join(folder, "area.txt")
                 shutil.copy2(areaTemplate, self.area)
 
+            if self.memorialDescritivoPdf.isChecked():
+                self.fullMemorialPdf = os.path.join(folder, "analitico.pdf")
+
 
 
     def createFiles(self):
@@ -148,6 +152,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         if self.tableAreaCsv.isChecked():
             self.createArea()
+
+        if self.memorialDescritivoPdf.isChecked():
+            self.createFullMemorialPdf()
 
         if not self.memorialSinteticHtml.isChecked() & self.memorialDescritivoTxt.isChecked() & self.seloTxt.isChecked() & self.tableAreaCsv.isChecked():
             QMessageBox.information(self, self.tr('Attention!'), self.tr('Select at least one file type!'))
@@ -323,10 +330,117 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         memorial.write(newData)
         memorial.close()
 
+
+    # def addPageNumber(canvas, doc):
+    #     page_num = canvas.getPageNumber()
+    #     text = "%s" % page_num
+    #     canvas.drawRightString(184*mm, 8*mm, text)
+
     #guilherme: funcção para criar um memorial descritivo completo
     def createFullMemorialPdf(self):
-        print 1
-        #TODO
+        print 2
+        # FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
+        # doc = SimpleDocTemplate(self.fullMemorialPdf,pagesize=letter,rightMargin=85,leftMargin=85,topMargin=71,bottomMargin=35)
+        # title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO SECRETARIA DO PATRIMÔNIO DA UNIÃO'
+        # subTitle = 'Memorial Descritivo'
+        # logo = "C:\Users\09726968658\.qgis2\python\plugins\AzimuthDistanceCalculator\azimuthsAndDistances\templates\template_memorial_pdf\rep_of_brazil.png"
+        # denominacaoArea = 'ÁREA INDUBITÁVEL DA UNIÃO NA ARQ GURUPÁ'
+        # uf = 'PARÁ'
+        # city = 'CACHOEIRA DO ARARI'
+        # sistemGeodesicoRef = 'SIRGAS 2000'
+        # sistemProjectionCartografic = 'UTM 22 SUL'
+        # perimetroMetro = '137974.18'
+        # areaMetroQuad = '34726602.21'
+        # addressBr= 'Brasilia'
+        # responsible = 'ANTONIO AFONSO CORDEIRO JUNIOR'
+        # officeResponsible = 'Geografo'
+        # organization = 'CGIPA/SPU'
+        #
+        # im = Image(logo, 1*inch, 1*inch)
+        # Story.append(im)
+        # styles=getSampleStyleSheet()
+        #
+        # #incerindo titulo
+        # styles.add(ParagraphStyle(name='Center', alignment=TA_CENTER, fontName="Times-Bold"))
+        # ptext = '<font size=12>%s</font>' % title
+        # Story.append(Spacer(2, 12))
+        # Story.append(Paragraph(ptext, styles["Center"]))
+        # Story.append(Spacer(1, 12))
+
+        # #incerindo subtitulo
+        #
+        # ptext = '<font size=12>%s</font>' % subTitle
+        # Story.append(Paragraph(ptext, styles["Center"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # #incerindo Metadados
+        #
+        # styles.add(ParagraphStyle(name='Left', alignment=TA_LEFT, fontName="Times-Bold"))
+        #
+        # ptext = '<font size=12 fontName="Times-Bold">Denominação da Área: </font>' + '<font size=12>%s</font>' % denominacaoArea
+        # Story.append(Paragraph(ptext, styles["Normal"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # ptext = '<font size=12 fontName="Times-Bold">UF: </font>' + '<font size=12>%s</font>' % uf
+        # Story.append(Paragraph(ptext, styles["Normal"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # ptext = '<font size=12 fontName="Times-Bold">Municipio(s): </font>' + '<font size=12>%s</font>' % city
+        # Story.append(Paragraph(ptext, styles["Normal"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # ptext = '<font size=12 fontName="Times-Bold">Sistema Geodésico de Referência: </font>' + '<font size=12>%s</font>' % sistemGeodesicoRef
+        # Story.append(Paragraph(ptext, styles["Normal"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # ptext = '<font size=12 fontName="Times-Bold">Sistema de Projeção Cartográfica: </font>' + '<font size=12>%s</font>' % sistemProjectionCartografic
+        # Story.append(Paragraph(ptext, styles["Normal"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # ptext = '<font size=12 fontName="Times-Bold">Perímetro(m): </font>' + '<font size=12>%s</font>' % perimetroMetro
+        # Story.append(Paragraph(ptext, styles["Normal"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # ptext = '<font size=12 fontName="Times-Bold">Área(m^2): </font>' + '<font size=12>%s</font>' % areaMetroQuad
+        # Story.append(Paragraph(ptext, styles["Normal"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # Story.append(Spacer(1, 12))
+        # styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+        #
+        # #add texto do memorial.
+        #
+        # ptext = self.getDescription()
+        #
+        # Story.append(Paragraph(ptext, styles["Justify"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # #Add data e local
+        #
+        # formattedTime = date.today().timetuple()
+        # textdataLocal = addressBr + ", " + str(formattedTime[2]) + " de " + FULL_MONTHS[formattedTime[1]-1] + " de " + str(formattedTime[0])
+        # styles.add(ParagraphStyle(name='dateLocal', alignment=TA_RIGHT, fontName="Times-Roman"))
+        # ptext = '<font size=12> %s</font>' % textdataLocal
+        # Story.append(Paragraph(ptext, styles["dateLocal"]))
+        # Story.append(Spacer(1, 12))
+        #
+        # #addlocal assinatura
+        #
+        # Story.append(Spacer(1, 12))
+        # Story.append(Spacer(1, 12))
+        # ptext = '<font size=12>____________________________________________________</font>'
+        # Story.append(Paragraph(ptext, styles["Center"]))
+        # ptext = '<font size=12>%s</font>' %responsible
+        # Story.append(Paragraph(ptext, styles["Center"]))
+        # ptext = '<font size=12>%s</font>' %officeResponsible
+        # Story.append(Paragraph(ptext, styles["Center"]))
+        # ptext = '<font size=12>%s</font>' % organization
+        # Story.append(Paragraph(ptext, styles["Center"]))
+        #
+        # #arquivo.close()
+        # doc.build(Story, onFirstPage=addPageNumber, onLaterPages=addPageNumber)
+
+
 
     def getDescription(self):
         description = str()
