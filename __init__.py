@@ -22,14 +22,31 @@
 """
 import os
 import sys
-stdlib_dir = os.path.dirname(os.__file__)
-print stdlib_dir
-real_distutils_path = sys.path
+import imp
 
-__path__.append('C:\Users\09726968658\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\site-packages')
-#execfile(os.path.join(real_distutils_path, '__init__.py'))
-print __path__
+name_lib_dir = os.path.expanduser("~")
+name_lib_dir  = name_lib_dir + '\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\site-packages'
+sys.path.append(name_lib_dir)
+
+name_lib_dir = os.path.expanduser("~")
+name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
+sys.path.append(name_lib_dir)
+
+name_lib_dir = os.path.expanduser("~")
+name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib'
+sys.path.append(name_lib_dir)
+
+name_lib_dir = os.path.expanduser("~")
+name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
+sys.path.append(name_lib_dir)
 def classFactory(iface):
     # load AzimuthDistanceCalculator class from file AzimuthDistanceCalculator
+    #from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT, TA_RIGHT
+    # from reportlab.lib.pagesizes import letter
+    # from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+    # from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    # from reportlab.lib.units import inch
+    # from datetime import date
+    # from reportlab.lib.units import mm
     from azimuthdistancecalculator import AzimuthDistanceCalculator
     return AzimuthDistanceCalculator(iface)
