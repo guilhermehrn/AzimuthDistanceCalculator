@@ -22,31 +22,30 @@
 """
 import os
 import sys
-import imp
+#import imp
 
-name_lib_dir = os.path.expanduser("~")
-name_lib_dir  = name_lib_dir + '\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\site-packages'
-sys.path.append(name_lib_dir)
+currentDirectoryPath = os.path.abspath(__package__)
+print currentDirectoryPath
 
-name_lib_dir = os.path.expanduser("~")
-name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
-sys.path.append(name_lib_dir)
+libraryDirectoryPath = os.path.join(currentDirectoryPath, '/ENV/Lib/site-packages')
+print libraryDirectoryPath
+sys.path.append(libraryDirectoryPath)
 
-name_lib_dir = os.path.expanduser("~")
-name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib'
-sys.path.append(name_lib_dir)
+libraryDirectoryPath = os.path.join(currentDirectoryPath, '/ENV/Lib/distutils')
+print libraryDirectoryPath
+#name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
+sys.path.append(libraryDirectoryPath)
 
-name_lib_dir = os.path.expanduser("~")
-name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
-sys.path.append(name_lib_dir)
+libraryDirectoryPath = os.path.join(currentDirectoryPath, '/ENV/Lib')
+print libraryDirectoryPath
+#name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib'
+sys.path.append(libraryDirectoryPath)
+
+libraryDirectoryPath = os.path.join(currentDirectoryPath, '/ENV/Lib/distutils')
+print libraryDirectoryPath
+#name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
+sys.path.append(libraryDirectoryPath)
 def classFactory(iface):
     # load AzimuthDistanceCalculator class from file AzimuthDistanceCalculator
-    #from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT, TA_RIGHT
-    # from reportlab.lib.pagesizes import letter
-    # from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
-    # from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-    # from reportlab.lib.units import inch
-    # from datetime import date
-    # from reportlab.lib.units import mm
     from azimuthdistancecalculator import AzimuthDistanceCalculator
     return AzimuthDistanceCalculator(iface)

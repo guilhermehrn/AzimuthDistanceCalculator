@@ -123,7 +123,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                 shutil.copy2(areaTemplate, self.area)
 
             if self.memorialDescritivoPdf.isChecked():
-                print folder
+                #print folder
                 self.fullMemorialPdf = os.path.join(folder, "analitico2.pdf")
 
     def createFiles(self):
@@ -163,7 +163,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         if self.memorialDescritivoPdf.isChecked():
             self.createFullMemorialPdf()
 
-        if not self.memorialSinteticHtml.isChecked() & self.memorialDescritivoTxt.isChecked() & self.seloTxt.isChecked() & self.tableAreaCsv.isChecked() & self.memorialDescritivoPdf.isChecked():
+        if self.memorialSinteticHtml.isChecked() == self.memorialDescritivoTxt.isChecked() == self.seloTxt.isChecked() == self.tableAreaCsv.isChecked() == self.memorialDescritivoPdf.isChecked() == 0:
             QMessageBox.information(self, self.tr('Attention!'), self.tr('Select at least one file type!'))
         else:
             QMessageBox.information(self, self.tr('Information!'), self.tr('Files created successfully!'))
@@ -345,13 +345,15 @@ class MemorialGenerator(QDialog, FORM_CLASS):
     #guilherme: funcção para criar um memorial descritivo completo
     def createFullMemorialPdf(self):
         print 1
-        print self.fullMemorialPdf
+        #print self.fullMemorialPdf
         FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
         doc = SimpleDocTemplate(self.fullMemorialPdf,pagesize=letter,rightMargin=85,leftMargin=85,topMargin=71,bottomMargin=35)
         Story=[]
         title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO SECRETARIA DO PATRIMÔNIO DA UNIÃO'
         subTitle = 'Memorial Descritivo'
-        logo = os.path.expanduser("~") + '\.qgis2\python\plugins\AzimuthDistanceCalculator\\azimuthsAndDistances\\templates\\template_memorial_pdf\\rep_of_brazil.png'
+        pathlogo = os.path.dirname(__file__)
+        print pathlogo
+        logo = os.path.join(pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
         print logo
         denominacaoArea = 'ÁREA INDUBITÁVEL DA UNIÃO NA ARQ GURUPÁ'
         uf = 'PARÁ'
