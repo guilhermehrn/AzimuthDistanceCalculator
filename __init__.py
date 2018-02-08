@@ -22,26 +22,26 @@
 """
 import os
 import sys
-#import imp
+import imp
 
-currentDirectoryPath = os.path.abspath(__package__)
+currentDirectoryPath = os.path.dirname(__file__)
 print currentDirectoryPath
 
-libraryDirectoryPath = os.path.join(currentDirectoryPath, '/ENV/Lib/site-packages')
+libraryDirectoryPath = os.path.join(currentDirectoryPath, 'ENV/Lib/site-packages')
 print libraryDirectoryPath
 sys.path.append(libraryDirectoryPath)
 
-libraryDirectoryPath = os.path.join(currentDirectoryPath, '/ENV/Lib/distutils')
+libraryDirectoryPath = os.path.join(currentDirectoryPath, 'ENV/Lib/distutils')
 print libraryDirectoryPath
 #name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
 sys.path.append(libraryDirectoryPath)
 
-libraryDirectoryPath = os.path.join(currentDirectoryPath, '/ENV/Lib')
+libraryDirectoryPath = os.path.join(currentDirectoryPath, 'ENV/Lib')
 print libraryDirectoryPath
 #name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib'
 sys.path.append(libraryDirectoryPath)
 
-libraryDirectoryPath = os.path.join(currentDirectoryPath, '/ENV/Lib/distutils')
+libraryDirectoryPath = os.path.join(currentDirectoryPath, 'ENV/Lib/distutils')
 print libraryDirectoryPath
 #name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
 sys.path.append(libraryDirectoryPath)
