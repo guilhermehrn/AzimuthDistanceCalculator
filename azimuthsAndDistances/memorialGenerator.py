@@ -435,7 +435,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         Story.append(Paragraph(ptext, styles["dateLocal"]))
         Story.append(Spacer(1, 12))
         #
-        # #addlocal assinatura
+        #saddlocal assinatual
         #
         Story.append(Spacer(1, 12))
         Story.append(Spacer(1, 12))
