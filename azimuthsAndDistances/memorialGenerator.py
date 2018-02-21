@@ -412,7 +412,8 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         Story.append(Paragraph(ptext, styles["Normal"]))
         Story.append(Spacer(1, 12))
 
-        ptext = '<font size=12 fontName="Times-Bold">Área(m^2): </font>' + '<font size=12>%s</font>' % areaMetroQuad
+        t = u'\xb2'.decode('utf-8')
+        ptext = '<font size=12 fontName="Times-Bold">Área(m'+ t +')</font>' + '<font size=12>%s</font>' % areaMetroQuad
         Story.append(Paragraph(ptext, styles["Normal"]))
         Story.append(Spacer(1, 12))
 
@@ -458,7 +459,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         description += "Inicia-se a descrição deste perímetro no vértice "+self.tableWidget.item(0,0).text()+", de coordenadas "
         description += "N "+self.tableWidget.item(0,2).text()+" m e "
         description += "E "+self.tableWidget.item(0,1).text()+" m, "
-        description += "Datum " +self.datumEdit.text()+ " com Meridiano Central " +self.meridianoEdit.text()+ ", localizado a "+self.enderecoEdit.text()+", Código INCRA " +self.codIncraEdit.text()+ "; "
+        description += "Datum " + self.datumEdit.text()+ " com Meridiano Central " +self.meridianoEdit.text()+ ", localizado à "+self.enderecoEdit.text()+", Código INCRA " +self.codIncraEdit.text()+ "; "
 
         rowCount = self.tableWidget.rowCount()
         for i in xrange(0,rowCount):
