@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>942</width>
-    <height>600</height>
+    <height>602</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,7 +78,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="memorialDescritivoPdf">
+          <widget class="QCheckBox" name="memorialDescritivoPdfCheck">
            <property name="text">
             <string>Memorial descritivo (.pdf)</string>
            </property>
@@ -191,10 +191,10 @@
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox">
+              <widget class="QComboBox" name="OrgaoExpeditorComb">
                <item>
                 <property name="text">
-                 <string>Ministério do Planejamento, Orcamento e gestão Secretaria do Patrimonio da União</string>
+                 <string>Ministério do Planejamento, Desenvolvimento e gestão Secretaria do Patrimonio da União</string>
                 </property>
                </item>
                <item>
@@ -216,7 +216,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit">
+              <widget class="QLineEdit" name="OutroOrgaoExpeditorEdit">
                <property name="enabled">
                 <bool>false</bool>
                </property>
@@ -234,7 +234,11 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_2"/>
+              <widget class="QLineEdit" name="superintenciaEdit">
+               <property name="text">
+                <string>Superintendência do Patrimonio da União</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -248,7 +252,11 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_3"/>
+              <widget class="QLineEdit" name="divisaoEdit">
+               <property name="text">
+                <string>Divisão de identificação e Contorle de Utiulização do Patrimonio</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -262,7 +270,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_4"/>
+              <widget class="QLineEdit" name="enderecoOrgaoEdit"/>
              </item>
             </layout>
            </item>
@@ -276,7 +284,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="lineEdit_5"/>
+              <widget class="QLineEdit" name="numMemorialEdit"/>
              </item>
             </layout>
            </item>
@@ -746,7 +754,7 @@
   <tabstop>seloTxt</tabstop>
   <tabstop>memorialSinteticHtml</tabstop>
   <tabstop>memorialDescritivoTxt</tabstop>
-  <tabstop>memorialDescritivoPdf</tabstop>
+  <tabstop>memorialDescritivoPdfCheck</tabstop>
   <tabstop>kappaEdit</tabstop>
   <tabstop>checkBox</tabstop>
   <tabstop>rbmcOrigemEdit</tabstop>
