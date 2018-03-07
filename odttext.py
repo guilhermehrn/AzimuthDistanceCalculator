@@ -3,7 +3,7 @@
 
 from odf.opendocument import OpenDocumentText
 from odf.draw import Frame, Image, Page
-from odf.style import Style, TextProperties, ParagraphProperties, PageLayoutProperties, PageLayout
+from odf.style import Style, TextProperties, ParagraphProperties, PageLayoutProperties, PageLayout, MasterPage
 from odf.text import H, P, Span
 
 FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
@@ -24,9 +24,16 @@ organization = 'CGIPA/SPU'
 
 textdoc = OpenDocumentText()
 
-pagelayout = PageLayout(name="MyLayout")
-pagelayout.addElement(PageLayoutProperties(marginbottom="1.25cm", marginright="3cm", marginleft="3cm", margintop="1.25cm"))
+dpstyle = Style(family="drawing-page",name="DP1")
+textdoc.automaticstyles.addElement(dpstyle)
+
+
+pagelayout = PageLayout(name="Mpm1")
+pagelayout.addElement(PageLayoutProperties(margin="0cm", marginbottom="12.5cm", marginright="300pt", marginleft="30mm", margintop="125mm", pageheight="27mm", pagewidth="297mm", printorientation="portrait"))
 textdoc.automaticstyles.addElement(pagelayout)
+
+
+masterpage = MasterPage(stylename=dpstyle, name="Default", pagelayoutname="Mpm1")
 
 
 
@@ -38,6 +45,7 @@ h1style.addElement(TextProperties(attributes={'fontsize':"12pt",'fontweight':"bo
 h1style.addElement(ParagraphProperties(attributes={"textalign": "center"}))
 s.addElement(h1style)
 
+#"marginbottom":"12.5cm", "marginright":"30mm", "marginleft":"30mm", "margintop":"125mm"
 
 # An automatic style
 boldstyle = Style(name="Bold", family="text")
@@ -45,6 +53,8 @@ boldprop = TextProperties(fontweight="bold")
 boldstyle.addElement(boldprop)
 textdoc.automaticstyles.addElement(boldstyle)
 # Text
+
+textdoc.masterstyles.addElement(masterpage)
 
 arq = open('text.txt','r')
 texto = arq.read()
