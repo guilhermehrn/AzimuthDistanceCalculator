@@ -8,7 +8,8 @@ from odf.text import H, P, Span
 from odf.table import Table, TableColumn, TableRow, TableCell
 
 FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
-title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO SECRETARIA DO PATRIMÔNIO DA UNIÃO'
+title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO'
+title2= 'SECRETARIA DO PATRIMÔNIO DA UNIÃO'
 subTitle = 'Memorial Descritivo xxxx/2018'
 logo = 'C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculator/azimuthsAndDistances/templates/template_memorial_pdf/rep_of_brazil.png'
 denominacaoArea = 'ÁREA INDUBITÁVEL DA UNIÃO NA ARQ GURUPÁ'
@@ -35,60 +36,46 @@ textdoc = OpenDocumentText()
 s = textdoc.styles
 
 pagelayout = PageLayout(name="Mpm1")
-pagelayout.addElement(PageLayoutProperties(marginbottom="1.25cm", marginright="3cm", marginleft="3cm"))
+pagelayout.addElement(PageLayoutProperties(marginbottom="-1.25cm", marginright="3cm", marginleft="3cm"))
 textdoc.automaticstyles.addElement(pagelayout)
 
-
 masterpage = MasterPage(stylename="da", name="Default", pagelayoutname=pagelayout)
-
 textdoc.masterstyles.addElement(masterpage)
-
-page = Page(masterpagename=masterpage)
-#textdoc..addElement(page)
-# Styles
-#stile do titulo.
-#stylemas = Style(name='deus',masterpagename=masterpage)
-
-#textdoc.automaticstyles.addElement(stylemas)
 
 h1style = Style(name="Heading 1", family="paragraph")
 h1style.addElement(TextProperties(attributes={'fontsize':"10.5pt",'fontweight':"bold", 'fontfamily':"Times New Roman"}))
 h1style.addElement(ParagraphProperties(attributes={"textalign":"center"}))
 s.addElement(h1style)
 
-h1style2 = Style(name="Heading2 1", family="paragraph", )
+h1style2 = Style(name="Heading2 1", family="paragraph")
 h1style2.addElement(TextProperties(attributes={'fontsize':"10.5pt",'fontweight':"bold", 'fontfamily':"Times New Roman"}))
 h1style2.addElement(ParagraphProperties(attributes={"textalign":"center"}))
 s.addElement(h1style2)
 
-h1style2a = Style(name="Heading2a 1", family="paragraph", )
+h1style2a = Style(name="Heading2a 1", family="paragraph")
 h1style2a.addElement(TextProperties(attributes={'fontsize':"10pt",'fontweight':"bold", 'fontfamily':"Times New Roman"}))
 h1style2a.addElement(ParagraphProperties(attributes={"textalign":"center"}))
 s.addElement(h1style2a)
 
-addressTitle = Style(name="addressTitle", family="paragraph", )
+addressTitle = Style(name="addressTitle", family="paragraph")
 addressTitle.addElement(TextProperties(attributes={'fontsize':"9pt", 'fontfamily':"Times New Roman"}))
 addressTitle.addElement(ParagraphProperties(attributes={"textalign":"center"}))
 s.addElement(addressTitle)
 
-
-h1style3 = Style(name="Heading3 1", family="paragraph", )
+h1style3 = Style(name="Heading3 1", family="paragraph")
 h1style3.addElement(TextProperties(attributes={'fontsize':"12pt",'fontweight':"bold", 'fontfamily':"Times New Roman", 'textunderlinewidth':"auto", 'textunderlinestyle':"solid"}))
 h1style3.addElement(ParagraphProperties(attributes={"textalign":"center"}))
 s.addElement(h1style3)
 
-h1style4 = Style(name="Heading4 1", family="paragraph", )
+h1style4 = Style(name="Heading4 1", family="paragraph")
 h1style4.addElement(TextProperties(attributes={'fontsize':"12pt",'fontweight':"bold", 'fontfamily':"Times New Roman"}))
 h1style4.addElement(ParagraphProperties(attributes={"textalign":"center"}))
 s.addElement(h1style4)
 
-texttable = Style(name="texttable", family="paragraph", )
+texttable = Style(name="texttable", family="paragraph")
 texttable.addElement(TextProperties(attributes={'fontsize':"10.5pt", 'fontfamily':"Times New Roman"}))
 texttable.addElement(ParagraphProperties(attributes={"textalign":"left"}))
 s.addElement(texttable)
-
-
-#"marginbottom":"12.5cm", "marginright":"30mm", "marginleft":"30mm", "margintop":"125mm"
 
 # An automatic style
 bodystyle = Style(name="Body", family="paragraph")
@@ -96,7 +83,6 @@ bodystyle.addElement(TextProperties(attributes={'fontsize':"11pt", 'fontfamily':
 bodystyle.addElement(ParagraphProperties(attributes={"textalign":"justify"}))
 s.addElement(bodystyle)
 textdoc.automaticstyles.addElement(bodystyle)
-
 
 bodystyle2 = Style(name="Body2", family="paragraph")
 bodystyle2.addElement(TextProperties(attributes={'fontsize':"11pt", 'fontfamily':"Times New Roman"}))
@@ -110,13 +96,11 @@ bodystyle3.addElement(ParagraphProperties(attributes={"textalign":"center"}))
 s.addElement(bodystyle3)
 textdoc.automaticstyles.addElement(bodystyle3)
 
-
 bodystyle4 = Style(name="Body4", family="paragraph")
 bodystyle4.addElement(TextProperties(attributes={'fontsize':"11pt", 'fontfamily':"Times New Roman"}))
 bodystyle4.addElement(ParagraphProperties(attributes={"textalign":"center"}))
 s.addElement(bodystyle4)
 textdoc.automaticstyles.addElement(bodystyle4)
-
 
 #imgStile
 imgstyle = Style(name="Mfr1", family="graphic")
@@ -124,8 +108,7 @@ imgprop = GraphicProperties(horizontalrel="paragraph", horizontalpos="center", v
 imgstyle.addElement(imgprop)
 textdoc.automaticstyles.addElement(imgstyle)
 # Text
-
-textdoc.masterstyles.addElement(masterpage)
+#textdoc.masterstyles.addElement(masterpage)
 
 arq = open('text.txt','r')
 texto = arq.read()
@@ -145,16 +128,22 @@ arq.close()
 
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
+
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
+
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
+
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
+
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
 
 h=H(outlinelevel=1, stylename=h1style, text=title.decode('utf-8'))
+textdoc.text.addElement(h)
+h=H(outlinelevel=1, stylename=h1style, text=title2.decode('utf-8'))
 textdoc.text.addElement(h)
 
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
@@ -162,6 +151,7 @@ textdoc.text.addElement(h)
 
 h=H(outlinelevel=1, stylename=h1style2, text=Superinte.decode('utf-8'))
 textdoc.text.addElement(h)
+
 h=H(outlinelevel=1, stylename=h1style2a, text=divisao.decode('utf-8'))
 textdoc.text.addElement(h)
 
@@ -174,16 +164,13 @@ textdoc.text.addElement(h)
 h=H(outlinelevel=1, stylename=h1style3, text=subTitle.decode('utf-8'))
 textdoc.text.addElement(h)
 
-
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
-
 
 # Create automatic styles for the column widths.
 widewidth = Style(name="co1", family="table-column")
 widewidth.addElement(TableColumnProperties(columnwidth="8cm"))
 textdoc.automaticstyles.addElement(widewidth)
-
 
 # Start the table, and describe the columns
 table = Table(name="Currency colours")
@@ -238,7 +225,6 @@ cell = TableCell(valuetype="text", currency="AUD", value="123")
 cell.addElement(P(text=u"Área (m²): ", stylename=texttable)) # The current displayed value
 tr.addElement(cell)
 
-
 cell = TableCell(valuetype="text", currency="AUD", value="123")
 cell.addElement(P(text=u"Perímetro (m): ", stylename=texttable)) # The current displayed value
 tr.addElement(cell)
@@ -253,7 +239,6 @@ tr.addElement(cell)
 
 textdoc.text.addElement(table)
 
-
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
 
@@ -263,12 +248,8 @@ textdoc.text.addElement(h)
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
 
-
 p = P(text=texto2, stylename=bodystyle)
 textdoc.text.addElement(p)
-#boldpart = Span(stylename=bodystyle, text="This part is bold. ")
-#p.addElement(boldpart)
-#p.addText("This is after bold.")
 
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
@@ -276,9 +257,9 @@ textdoc.text.addElement(h)
 p = P(text="Belo Horizonte, 10 de Outubro de 2016", stylename=bodystyle2)
 textdoc.text.addElement(p)
 
-
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
+
 h=H(outlinelevel=1, stylename=bodystyle, text='\n')
 textdoc.text.addElement(h)
 
@@ -290,7 +271,5 @@ textdoc.text.addElement(p)
 
 p = P(text=organization, stylename=bodystyle4)
 textdoc.text.addElement(p)
-
-
 
 textdoc.save("myfirstdocument.odt")
