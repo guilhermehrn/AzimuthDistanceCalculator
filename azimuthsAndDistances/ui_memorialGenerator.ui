@@ -64,7 +64,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="checkBox">
+          <widget class="QCheckBox" name="memorialDescritivoOdt">
            <property name="text">
             <string>Memorial descritivo (.odt)</string>
            </property>
@@ -78,7 +78,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="memorialDescritivoPdfCheck">
+          <widget class="QCheckBox" name="memorialDescritivoPdf">
            <property name="text">
             <string>Memorial descritivo (.pdf)</string>
            </property>
@@ -754,9 +754,9 @@
   <tabstop>seloTxt</tabstop>
   <tabstop>memorialSinteticHtml</tabstop>
   <tabstop>memorialDescritivoTxt</tabstop>
-  <tabstop>memorialDescritivoPdfCheck</tabstop>
+  <tabstop>memorialDescritivoPdf</tabstop>
   <tabstop>kappaEdit</tabstop>
-  <tabstop>checkBox</tabstop>
+  <tabstop>memorialDescritivoOdt</tabstop>
   <tabstop>rbmcOrigemEdit</tabstop>
   <tabstop>rbmcEsteEdit</tabstop>
   <tabstop>rbmcNorteEdit</tabstop>
