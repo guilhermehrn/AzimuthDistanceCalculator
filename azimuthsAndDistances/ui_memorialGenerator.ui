@@ -191,17 +191,10 @@
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="OrgaoExpeditorComb">
-               <item>
-                <property name="text">
-                 <string>Ministério do Planejamento, Desenvolvimento e gestão Secretaria do Patrimonio da União</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Outro</string>
-                </property>
-               </item>
+              <widget class="QLineEdit" name="OrgaoExpeditorEdit">
+               <property name="text">
+                <string>Ministério do Planejamento, Desenvolvimento e Gestão</string>
+               </property>
               </widget>
              </item>
             </layout>
@@ -211,14 +204,17 @@
              <item>
               <widget class="QLabel" name="label_26">
                <property name="text">
-                <string>Outro orgão expeditor:</string>
+                <string>Secretaria</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="OutroOrgaoExpeditorEdit">
+              <widget class="QLineEdit" name="secretariaEdit">
                <property name="enabled">
-                <bool>false</bool>
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>Secretaria do Patrimônio da União</string>
                </property>
               </widget>
              </item>
@@ -236,7 +232,7 @@
              <item>
               <widget class="QLineEdit" name="superintenciaEdit">
                <property name="text">
-                <string>Superintendência do Patrimonio da União</string>
+                <string>Superintendência do Patrimônio da União em Minas Gerais</string>
                </property>
               </widget>
              </item>
@@ -254,7 +250,7 @@
              <item>
               <widget class="QLineEdit" name="divisaoEdit">
                <property name="text">
-                <string>Divisão de identificação e Contorle de Utiulização do Patrimonio</string>
+                <string>Divisão de identificação e Controle de Utilização do Patrimônio</string>
                </property>
               </widget>
              </item>
@@ -270,7 +266,11 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="enderecoOrgaoEdit"/>
+              <widget class="QLineEdit" name="enderecoOrgaoEdit">
+               <property name="text">
+                <string>Av. Afonso Pena, 1316, 11º andar, Ala A, 30130-003, Belo Horizonte/MG</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -284,7 +284,11 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="numMemorialEdit"/>
+              <widget class="QLineEdit" name="numMemorialEdit">
+               <property name="text">
+                <string>1000</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -349,7 +353,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="imovelEdit"/>
+                  <widget class="QLineEdit" name="imovelEdit">
+                   <property name="text">
+                    <string>Minha Casa Minha Vida</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -363,7 +371,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="proprietarioEdit"/>
+                  <widget class="QLineEdit" name="proprietarioEdit">
+                   <property name="text">
+                    <string>Eu Mesmo</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -379,7 +391,7 @@
                  <item>
                   <widget class="QLineEdit" name="municipioEdit">
                    <property name="text">
-                    <string/>
+                    <string>Belzonte</string>
                    </property>
                   </widget>
                  </item>
@@ -395,7 +407,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="comarcaEdit"/>
+                  <widget class="QLineEdit" name="comarcaEdit">
+                   <property name="text">
+                    <string>Sei lá</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -409,7 +425,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="enderecoEdit"/>
+                  <widget class="QLineEdit" name="enderecoEdit">
+                   <property name="text">
+                    <string>Rua dos Bobos</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -427,7 +447,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="ufEdit"/>
+                  <widget class="QLineEdit" name="ufEdit">
+                   <property name="text">
+                    <string>MG</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -441,7 +465,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="codIncraEdit"/>
+                  <widget class="QLineEdit" name="codIncraEdit">
+                   <property name="text">
+                    <string>123456</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -455,7 +483,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="matriculaEdit"/>
+                  <widget class="QLineEdit" name="matriculaEdit">
+                   <property name="text">
+                    <string>654321</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -469,7 +501,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="cadastroEdit"/>
+                  <widget class="QLineEdit" name="cadastroEdit">
+                   <property name="text">
+                    <string>1234587</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -597,7 +633,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="rbmcOrigemEdit"/>
+                  <widget class="QLineEdit" name="rbmcOrigemEdit">
+                   <property name="text">
+                    <string>4515B</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -611,7 +651,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="rbmcEsteEdit"/>
+                  <widget class="QLineEdit" name="rbmcEsteEdit">
+                   <property name="text">
+                    <string>878B</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -625,7 +669,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="rbmcNorteEdit"/>
+                  <widget class="QLineEdit" name="rbmcNorteEdit">
+                   <property name="text">
+                    <string>B</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -639,7 +687,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="localRbmcEdit"/>
+                  <widget class="QLineEdit" name="localRbmcEdit">
+                   <property name="text">
+                    <string>bobks</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -676,7 +728,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="autorEdit"/>
+                  <widget class="QLineEdit" name="autorEdit">
+                   <property name="text">
+                    <string>Guilherme Henrique</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -690,7 +746,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="lineEdit_6"/>
+                  <widget class="QLineEdit" name="officeResponsibleEdit">
+                   <property name="text">
+                    <string>Analista de Dados</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>
@@ -704,7 +764,11 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="creaEdit"/>
+                  <widget class="QLineEdit" name="creaEdit">
+                   <property name="text">
+                    <string>13131313</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </item>

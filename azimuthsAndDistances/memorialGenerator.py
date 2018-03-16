@@ -366,9 +366,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO SECRETARIA DO PATRIMÔNIO DA UNIÃO'
         subTitle = 'Memorial Descritivo'
         pathlogo = os.path.dirname(__file__)
-        print pathlogo
+        #print pathlogo
         logo = os.path.join(pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
-        print logo
+        #print logo
         denominacaoArea = 'ÁREA INDUBITÁVEL DA UNIÃO NA ARQ GURUPÁ'
         uf = 'PARÁ'
         city = 'CACHOEIRA DO ARARI'
@@ -469,25 +469,41 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
     def createFullMemorialOdt(self):
         FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
-        title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO'
-        title2= 'SECRETARIA DO PATRIMÔNIO DA UNIÃO'
-        subTitle = 'Memorial Descritivo xxxx/2018'
-        logo = 'C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculator/azimuthsAndDistances/templates/template_memorial_pdf/rep_of_brazil.png'
-        denominacaoArea = 'ÁREA INDUBITÁVEL DA UNIÃO NA ARQ GURUPÁ'
-        uf = 'PARÁ'
-        city = 'CACHOEIRA DO ARARI'
-        sistemGeodesicoRef = 'SIRGAS 2000'
-        sistemProjectionCartografic = 'UTM 22 SUL'
-        perimetroMetro = '137974.18'
-        areaMetroQuad = '34726602.21'
-        addressBrCity= 'Brasilia'
-        responsible = 'GUILHERME HENRIQUE'
-        officeResponsible = 'Analista de Sistemas'
-        organization = 'DIIUP/SPU/MG'
+        pathlogo = os.path.dirname(__file__)
+        logo = os.path.join(pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
+        formattedTime = date.today().timetuple()
 
-        Superinte = "Superintendência do Patrimônio da União em Minas Gerais"
-        divisao = "Divisão de Identificação e Controle de Utilização do Patrimônio"
-        adresstitle="Av. Afonso Pena, 1316, 11º andar, Ala A, 30130-003, Belo Horizonte/MG"
+        kappa = float(self.kappaEdit.text())
+        geomPerimeter = self.geomPerimeter/kappa
+        geomArea = self.geomArea/(kappa*kappa)
+
+        title = self.OrgaoExpeditorEdit.text()
+        title2= self.secretariaEdit.text()
+        subTitle = 'Memorial Descritivo'
+
+        #logo = 'C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculator/azimuthsAndDistances/templates/template_memorial_pdf/rep_of_brazil.png'
+        denominationArea = self.imovelEdit.text()
+        uf = self.ufEdit.text()
+        city = self.municipioEdit.text()
+        sistemGeodesicoRef = self.projectionEdit.text()
+        sistemProjectionCartografic = 'UTM 22 SUL'
+        perimeter = "%0.2f"%(geomPerimeter)
+        areaMetroQuad = "%0.2f"%(geomArea)
+        adressImovel = self.enderecoEdit.text()
+        matricula = self.matriculaEdit.text()
+        propertario = self.proprietarioEdit.text()
+        idMemorial = self.numMemorialEdit.text()
+
+        addressBrCityDoc= "_________________"
+        responsibletecName = self.autorEdit.text()
+        officeResponsible = self.officeResponsibleEdit.text()
+        identification = self.creaEdit.text()
+
+        Superinte = self.superintenciaEdit.text()
+        division = self.divisaoEdit.text()
+        adresstitle= self.enderecoOrgaoEdit.text()
+
+
 
         textdoc = OpenDocumentText()
 
@@ -571,9 +587,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         # Text
         #textdoc.masterstyles.addElement(masterpage)
 
-        arq = open('C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculator/text.txt','r')
-        texto = arq.read()
-        texto2 =texto.decode('utf-8')
+        #arq = open('C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculator/text.txt','r')
+        #texto = arq.read()
+        textDescription = self.getDescription().decode('utf-8')
 
         #insert image
         p=P()
@@ -585,7 +601,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         imgframe.addElement(img)
 
-        arq.close()
+    #    arq.close()
 
         h=H(outlinelevel=1, stylename=bodystyle, text='\n')
         textdoc.text.addElement(h)
@@ -602,9 +618,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=bodystyle, text='\n')
         textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=h1style, text=title.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style, text=title.decode('utf-8').upper())
         textdoc.text.addElement(h)
-        h=H(outlinelevel=1, stylename=h1style, text=title2.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style, text=title2.decode('utf-8').upper())
         textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=bodystyle, text='\n')
@@ -613,7 +629,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=h1style2, text=Superinte.decode('utf-8'))
         textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=h1style2a, text=divisao.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style2a, text=division.decode('utf-8'))
         textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=addressTitle, text=adresstitle.decode('utf-8'))
@@ -621,6 +637,12 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         h=H(outlinelevel=1, stylename=bodystyle, text='\n')
         textdoc.text.addElement(h)
+
+
+        if self.numMemorialEdit.text():
+            subTitle = subTitle +' ' + idMemorial + '/' + str(formattedTime[0])
+        else:
+            subTitle = subTitle + ' ' + str(formattedTime[0])
 
         h=H(outlinelevel=1, stylename=h1style3, text=subTitle.decode('utf-8'))
         textdoc.text.addElement(h)
@@ -642,14 +664,14 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         # Create a cell with a negative value. It should show as red.
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Imóvel: " + denominacaoArea.decode('utf-8'), stylename=texttable)) # The current displayed value
+        cell.addElement(P(text=u"Imóvel: " + denominationArea.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Endereço: ", stylename=texttable)) # The current displayed value
+        cell.addElement(P(text=u"Endereço: " + adressImovel.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         # Create a column (same as <col> in HTML) Make all cells in column default to currency
@@ -660,11 +682,11 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         table.addElement(tr)
         # Create a cell with a negative value. It should show as red.
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Município/UF: ", stylename=texttable)) # The current displayed value
+        cell.addElement(P(text=u"Município/UF: " + city.decode('utf-8') + '/' + uf.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"NBP: ", stylename=texttable)) # The current displayed value
+        cell.addElement(P(text=u"NBP: ", stylename=texttable))
         tr.addElement(cell)
 
         # Create a row (same as <tr> in HTML)
@@ -672,30 +694,35 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         table.addElement(tr)
         # Create another cell but with a positive value. It should show in black
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Matrícula: ", stylename=texttable)) # The current displayed value
+        cell.addElement(P(text=u"Matrícula: " + matricula.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Código SNCR: ", stylename=texttable)) # The current displayed value
+        cell.addElement(P(text=u"Código SNCR: ", stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Área (m²): ", stylename=texttable)) # The current displayed value
+        cell.addElement(P(text=u"Área (m²): " + str(areaMetroQuad), stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Perímetro (m): ", stylename=texttable)) # The current displayed value
+        cell.addElement(P(text=u"Perímetro (m): " + str(perimeter), stylename=texttable))
         tr.addElement(cell)
+
+        tr = TableRow()
+        table.addElement(tr)
+
+
 
         table.addElement(TableColumn(numbercolumnsrepeated=0, stylename=widewidth, defaultcellstylename="co1"))
         tr = TableRow()
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Proprietário: ", stylename=texttable)) # The current displayed value
+        cell.addElement(P(text=u"Proprietário: " + propertario.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         textdoc.text.addElement(table)
@@ -709,13 +736,13 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=bodystyle, text='\n')
         textdoc.text.addElement(h)
 
-        p = P(text=texto2, stylename=bodystyle)
+        p = P(text=textDescription, stylename=bodystyle)
         textdoc.text.addElement(p)
 
         h=H(outlinelevel=1, stylename=bodystyle, text='\n')
         textdoc.text.addElement(h)
 
-        p = P(text="Belo Horizonte, 10 de Outubro de 2016", stylename=bodystyle2)
+        p = P(text=addressBrCityDoc + ", " + str(formattedTime[2]) + " de " + FULL_MONTHS[formattedTime[1]-1] + " de " + str(formattedTime[0]), stylename=bodystyle2)
         textdoc.text.addElement(p)
 
         h=H(outlinelevel=1, stylename=bodystyle, text='\n')
@@ -724,13 +751,13 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=bodystyle, text='\n')
         textdoc.text.addElement(h)
 
-        p = P(text=responsible, stylename=bodystyle3)
+        p = P(text=responsibletecName, stylename=bodystyle3)
         textdoc.text.addElement(p)
 
         p = P(text=officeResponsible, stylename=bodystyle4)
         textdoc.text.addElement(p)
 
-        p = P(text=organization, stylename=bodystyle4)
+        p = P(text=identification, stylename=bodystyle4)
         textdoc.text.addElement(p)
 
         textdoc.save(self.fullMemorialOdt)

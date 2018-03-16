@@ -188,6 +188,13 @@ tr = TableRow()
 table.addElement(tr)
 
 cell = TableCell(valuetype="text", currency="AUD")
+cell.addElement(P(text=u"Proprietário:", stylename=texttable)) # The current displayed value
+tr.addElement(cell)
+
+tr = TableRow()
+table.addElement(tr)
+
+cell = TableCell(valuetype="text", currency="AUD")
 cell.addElement(P(text=u"Endereço: ", stylename=texttable)) # The current displayed value
 tr.addElement(cell)
 
@@ -210,8 +217,9 @@ tr.addElement(cell)
 tr = TableRow()
 table.addElement(tr)
 # Create another cell but with a positive value. It should show in black
-cell = TableCell(valuetype="text", currency="AUD")
-cell.addElement(P(text=u"Matrícula: ", stylename=texttable)) # The current displayed value
+
+cell = TableCell(valuetype="text", currency="AUD", value="123")
+cell.addElement(P(text=u"Área (m²): ", stylename=texttable)) # The current displayed value
 tr.addElement(cell)
 
 cell = TableCell(valuetype="text", currency="AUD", value="123")
@@ -222,20 +230,25 @@ tr = TableRow()
 table.addElement(tr)
 
 cell = TableCell(valuetype="text", currency="AUD", value="123")
-cell.addElement(P(text=u"Área (m²): ", stylename=texttable)) # The current displayed value
-tr.addElement(cell)
-
-cell = TableCell(valuetype="text", currency="AUD", value="123")
 cell.addElement(P(text=u"Perímetro (m): ", stylename=texttable)) # The current displayed value
 tr.addElement(cell)
 
-table.addElement(TableColumn(numbercolumnsrepeated=0, stylename=widewidth, defaultcellstylename="co1"))
+cell = TableCell(valuetype="text", currency="AUD", value="123")
+cell.addElement(P(text="RIP: ", stylename=texttable)) # The current displayed value
+tr.addElement(cell)
+
 tr = TableRow()
 table.addElement(tr)
 
-cell = TableCell(valuetype="text", currency="AUD")
-cell.addElement(P(text=u"Proprietário: ", stylename=texttable)) # The current displayed value
+cell = TableCell(valuetype="text", currency="AUD", value="123")
+cell.addElement(P(text=u"Comarca: ", stylename=texttable)) # The current displayed value
 tr.addElement(cell)
+
+cell = TableCell(valuetype="text", currency="AUD")
+cell.addElement(P(text=u"Matrícula: -- ", stylename=texttable)) # The current displayed value
+tr.addElement(cell)
+
+
 
 textdoc.text.addElement(table)
 
