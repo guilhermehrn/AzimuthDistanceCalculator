@@ -493,6 +493,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         matricula = self.matriculaEdit.text()
         propertario = self.proprietarioEdit.text()
         idMemorial = self.numMemorialEdit.text()
+        comarca = self.comarcaEdit.text()
 
         addressBrCityDoc= "_________________"
         responsibletecName = self.autorEdit.text()
@@ -671,6 +672,13 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
+        cell.addElement(P(text=u"Proprietário: " + propertario.decode('utf-8'), stylename=texttable))
+        tr.addElement(cell)
+
+        tr = TableRow()
+        table.addElement(tr)
+
+        cell = TableCell(valuetype="text", currency="AUD")
         cell.addElement(P(text=u"Endereço: " + adressImovel.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
@@ -693,8 +701,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         tr = TableRow()
         table.addElement(tr)
         # Create another cell but with a positive value. It should show in black
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Matrícula: " + matricula.decode('utf-8'), stylename=texttable))
+
+        cell = TableCell(valuetype="text", currency="AUD", value="123")
+        cell.addElement(P(text=u"Perímetro (m): " + str(perimeter), stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD", value="123")
@@ -708,22 +717,26 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         cell.addElement(P(text=u"Área (m²): " + str(areaMetroQuad), stylename=texttable))
         tr.addElement(cell)
 
-        cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Perímetro (m): " + str(perimeter), stylename=texttable))
+        cell = TableCell(valuetype="text", currency="AUD")
+        cell.addElement(P(text=u"Matrícula: " + matricula.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
-        tr = TableRow()
-        table.addElement(tr)
-
-
-
-        table.addElement(TableColumn(numbercolumnsrepeated=0, stylename=widewidth, defaultcellstylename="co1"))
         tr = TableRow()
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Proprietário: " + propertario.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Comarca: " + comarca.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
+
+
+
+        # table.addElement(TableColumn(numbercolumnsrepeated=0, stylename=widewidth, defaultcellstylename="co1"))
+        # tr = TableRow()
+        # table.addElement(tr)
+        #
+        # cell = TableCell(valuetype="text", currency="AUD")
+        # cell.addElement(P(text=u"Proprietário: " + propertario.decode('utf-8'), stylename=texttable))
+        # tr.addElement(cell)
 
         textdoc.text.addElement(table)
 
