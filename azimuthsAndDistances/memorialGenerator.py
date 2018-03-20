@@ -506,19 +506,19 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
 
 
-        textdoc = OpenDocumentText()
+        self.textdoc = OpenDocumentText()
 
         #dpstyle = Style(family="drawing-page",name="DP1")
         #textdoc.automaticstyles.addElement(dpstyle)
 
-        s = textdoc.styles
+        s = self.textdoc.styles
 
         pagelayout = PageLayout(name="Mpm1")
         pagelayout.addElement(PageLayoutProperties(marginbottom="-1.25cm", marginright="3cm", marginleft="3cm"))
-        textdoc.automaticstyles.addElement(pagelayout)
+        self.textdoc.automaticstyles.addElement(pagelayout)
 
         masterpage = MasterPage(stylename="da", name="Default", pagelayoutname=pagelayout)
-        textdoc.masterstyles.addElement(masterpage)
+        self.textdoc.masterstyles.addElement(masterpage)
 
         h1style = Style(name="Heading 1", family="paragraph")
         h1style.addElement(TextProperties(attributes={'fontsize':"10.5pt",'fontweight':"bold", 'fontfamily':"Times New Roman"}))
@@ -556,46 +556,46 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         s.addElement(texttable)
 
         # An automatic style
-        bodystyle = Style(name="Body", family="paragraph")
-        bodystyle.addElement(TextProperties(attributes={'fontsize':"11pt", 'fontfamily':"Times New Roman"}))
-        bodystyle.addElement(ParagraphProperties(attributes={"textalign":"justify"}))
-        s.addElement(bodystyle)
-        textdoc.automaticstyles.addElement(bodystyle)
+        self.bodystyle = Style(name="Body", family="paragraph")
+        self.bodystyle.addElement(TextProperties(attributes={'fontsize':"11pt", 'fontfamily':"Times New Roman"}))
+        self.bodystyle.addElement(ParagraphProperties(attributes={"textalign":"justify"}))
+        s.addElement(self.bodystyle)
+        self.textdoc.automaticstyles.addElement(self.bodystyle)
 
         bodystyle2 = Style(name="Body2", family="paragraph")
         bodystyle2.addElement(TextProperties(attributes={'fontsize':"11pt", 'fontfamily':"Times New Roman"}))
         bodystyle2.addElement(ParagraphProperties(attributes={"textalign":"right"}))
         s.addElement(bodystyle2)
-        textdoc.automaticstyles.addElement(bodystyle2)
+        self.textdoc.automaticstyles.addElement(bodystyle2)
 
         bodystyle3 = Style(name="Body3", family="paragraph")
         bodystyle3.addElement(TextProperties(attributes={'fontsize':"11pt", 'fontweight':"bold", 'fontfamily':"Times New Roman"}))
         bodystyle3.addElement(ParagraphProperties(attributes={"textalign":"center"}))
         s.addElement(bodystyle3)
-        textdoc.automaticstyles.addElement(bodystyle3)
+        self.textdoc.automaticstyles.addElement(bodystyle3)
 
         bodystyle4 = Style(name="Body4", family="paragraph")
         bodystyle4.addElement(TextProperties(attributes={'fontsize':"11pt", 'fontfamily':"Times New Roman"}))
         bodystyle4.addElement(ParagraphProperties(attributes={"textalign":"center"}))
         s.addElement(bodystyle4)
-        textdoc.automaticstyles.addElement(bodystyle4)
+        self.textdoc.automaticstyles.addElement(bodystyle4)
 
         #imgStile
         imgstyle = Style(name="Mfr1", family="graphic")
         imgprop = GraphicProperties(horizontalrel="paragraph", horizontalpos="center", verticalrel="paragraph-content", verticalpos="top")
         imgstyle.addElement(imgprop)
-        textdoc.automaticstyles.addElement(imgstyle)
+        self.textdoc.automaticstyles.addElement(imgstyle)
         # Text
         #textdoc.masterstyles.addElement(masterpage)
 
         #arq = open('C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculator/text.txt','r')
         #texto = arq.read()
-        textDescription = self.getDescription().decode('utf-8')
+        #textDescription = self.insertDescriptionodt().decode('utf-8')
 
         #insert image
         p=P()
-        textdoc.text.addElement(p)
-        href = textdoc.addPicture(logo)
+        self.textdoc.text.addElement(p)
+        href = self.textdoc.addPicture(logo)
         imgframe = Frame(name="fig1", anchortype="paragraph", width="2.24cm", height="2.22cm", zindex="0", stylename=imgstyle)
         p.addElement(imgframe)
         img = Image(href=href, type="simple", show="embed", actuate="onLoad")
@@ -604,40 +604,40 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
     #    arq.close()
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=h1style, text=title.decode('utf-8').upper())
-        textdoc.text.addElement(h)
+        self.textdoc.text.addElement(h)
         h=H(outlinelevel=1, stylename=h1style, text=title2.decode('utf-8').upper())
-        textdoc.text.addElement(h)
+        self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=h1style2, text=Superinte.decode('utf-8'))
-        textdoc.text.addElement(h)
+        self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=h1style2a, text=division.decode('utf-8'))
-        textdoc.text.addElement(h)
+        self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=addressTitle, text=adresstitle.decode('utf-8'))
-        textdoc.text.addElement(h)
+        self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
 
         if self.numMemorialEdit.text():
@@ -646,15 +646,15 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             subTitle = subTitle + ' ' + str(formattedTime[0])
 
         h=H(outlinelevel=1, stylename=h1style3, text=subTitle.decode('utf-8'))
-        textdoc.text.addElement(h)
+        self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
         # Create automatic styles for the column widths.
         widewidth = Style(name="co1", family="table-column")
         widewidth.addElement(TableColumnProperties(columnwidth="8cm"))
-        textdoc.automaticstyles.addElement(widewidth)
+        self.textdoc.automaticstyles.addElement(widewidth)
 
         # Start the table, and describe the columns
         table = Table(name="Currency colours")
@@ -738,42 +738,45 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         # cell.addElement(P(text=u"Proprietário: " + propertario.decode('utf-8'), stylename=texttable))
         # tr.addElement(cell)
 
-        textdoc.text.addElement(table)
+        self.textdoc.text.addElement(table)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=h1style4, text='DESCRIÇÃO'.decode('utf-8'))
-        textdoc.text.addElement(h)
+        self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
-        p = P(text=textDescription, stylename=bodystyle)
-        textdoc.text.addElement(p)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        # p = P(text=textDescription, stylename=bodystyle)
+        # self.textdoc.text.addElement(p)
+
+        self.insertDescriptionodt()
+
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
         p = P(text=addressBrCityDoc + ", " + str(formattedTime[2]) + " de " + FULL_MONTHS[formattedTime[1]-1] + " de " + str(formattedTime[0]), stylename=bodystyle2)
-        textdoc.text.addElement(p)
+        self.textdoc.text.addElement(p)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=bodystyle, text='\n')
-        textdoc.text.addElement(h)
+        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        self.textdoc.text.addElement(h)
 
         p = P(text=responsibletecName, stylename=bodystyle3)
-        textdoc.text.addElement(p)
+        self.textdoc.text.addElement(p)
 
         p = P(text=officeResponsible, stylename=bodystyle4)
-        textdoc.text.addElement(p)
+        self.textdoc.text.addElement(p)
 
         p = P(text=identification, stylename=bodystyle4)
-        textdoc.text.addElement(p)
+        self.textdoc.text.addElement(p)
 
-        textdoc.save(self.fullMemorialOdt)
+        self.textdoc.save(self.fullMemorialOdt)
 
     def getDescription(self):
         description = str()
@@ -787,7 +790,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             side = self.tableWidget.item(i,3).text()
             sideSplit = side.split("-")
 
-            description += " deste, segue confrontando com "+self.tableWidget.item(i,7).text()+", "
+            description += " deste, segue confrontando com "+ self.tableWidget.item(i,7).text()+", "
             description += "com os seguintes azimute plano e distância:"
             description += self.tableWidget.item(i,4).text()+" e "
             description += self.tableWidget.item(i,6).text()+"; até o vértice "
@@ -808,3 +811,90 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                 description += "E "+self.tableWidget.item(i+1,1).text()+" m;"
 
         return description
+
+    def insertDescriptionodt(self):
+
+            boldstyle = Style(name="Bold", family="text")
+            boldprop = TextProperties(fontweight="bold")
+            boldstyle.addElement(boldprop)
+            self.textdoc.automaticstyles.addElement(boldstyle)
+
+            description = P(stylename=self.bodystyle)
+            description.addText("Inicia-se a descrição deste perímetro no vértice ")
+            description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(0,0).text()))
+
+            description.addText(", de coordenadas ")
+            description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()))
+
+            description.addText(" m e ")
+            description.addElement(Span(stylename=boldstyle, text="E " + self.tableWidget.item(0,1).text()))
+
+            description.addText(" m, DATUM ")
+            description.addElement(Span(stylename=boldstyle, text=self.datumEdit.text()))
+
+            description.addText(" com Meridiano Central ")
+            description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
+
+            description.addText(", localizado à " + self.enderecoEdit.text())
+            # boldpart = Span(stylename=boldstyle, text=)
+            # description.addElement(boldpart)
+
+            if self.codIncraEdit.text():
+                description.addText(", Código INCRA "+ self.codIncraEdit.text()+ "; ")
+                self.textdoc.text.addElement(description)
+            else:
+                description.addText(";")
+
+            rowCount = self.tableWidget.rowCount()
+
+            for i in xrange(0,rowCount):
+                side = self.tableWidget.item(i,3).text()
+                sideSplit = side.split("-")
+
+                if self.tableWidget.item(i,7).text():
+                    description.addText(" deste, segue confrontando com " + self.tableWidget.item(i,7).text() + ", ")
+
+                    description.addText("com os seguintes azimute plano e distância: ")
+                    description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,4).text()))
+                    description.addText(" e ")
+
+                    description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,6).text()))
+                    description.addText("; até o vértice ")
+                else:
+                    description.addText(" deste, segue sem confrontante até o vértice ")
+
+
+                if (i == rowCount - 1):
+                    description.addElement(Span(stylename=boldstyle, text=sideSplit[1]))
+                    description.addText(", de coordenadas ")
+
+                    description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()))
+                    description.addText(" m e ")
+
+                    description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(0,1).text()))
+                    description.addText(" m, encerrando esta descrição.")
+                    description.addText(" Todas as coordenadas aqui descritas estão georreferenciadas ao Sistema Geodésico Brasileiro")
+
+                    if self.rbmcOrigemEdit.text():
+
+                        description.addText(" , a partir da estação RBMC de " + self.rbmcOrigemEdit.text() + " de coordenadas ")
+                        description.addElement(Span(stylename=boldstyle, text="E " + self.rbmcEsteEdit.text()))
+                        description.addText(" m e ")
+                        description.addElement(Span(stylename=boldstyle, text="N " + self.rbmcNorteEdit.text()))
+                        description.addText(" m, ")
+                        description.addText("localizada em " + self.localRbmcEdit.text()+", ")
+
+                    description.addText(" e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central ")
+                    description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
+
+                    description.addText(", tendo como DATUM ")
+                    description.addElement(Span(stylename=boldstyle, text=self.datumEdit.text()))
+                    description.addText(". Todos os azimutes e distâncias, área e perímetro foram calculados no plano de projeção UTM.")
+                else:
+                    description.addElement(Span(stylename=boldstyle, text=sideSplit[1]))
+                    description.addText(", de coordenadas ")
+
+                    description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(i+1,2).text()))
+                    description.addText(" m e ")
+                    description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(i+1,1).text()))
+                    description.addText(" m;")
