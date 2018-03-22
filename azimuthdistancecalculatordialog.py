@@ -28,8 +28,8 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui_azimuthdistancecalculator.ui'))
 
 # Import specific modules
-from AzimuthDistanceCalculator.kappaAndConvergence.calculateKappaAndConvergence import CalculateKappaAndConvergenceDialog
-from AzimuthDistanceCalculator.azimuthsAndDistances.azimuthsAndDistances import AzimuthsAndDistancesDialog
+from AzimuthDistanceCalculatorSPU.kappaAndConvergence.calculateKappaAndConvergence import CalculateKappaAndConvergenceDialog
+from AzimuthDistanceCalculatorSPU.azimuthsAndDistances.azimuthsAndDistances import AzimuthsAndDistancesDialog
 
 class AzimuthDistanceCalculatorDialog(QDialog, FORM_CLASS):
     def __init__(self, iface):
@@ -40,9 +40,9 @@ class AzimuthDistanceCalculatorDialog(QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
-        
+
         self.iface = iface
-        
+
         # Connecting SIGNAL/SLOTS for the Output button
         self.kappaAndConvergenceButton.clicked.connect(self.calculateKappa)
 
@@ -61,7 +61,7 @@ class AzimuthDistanceCalculatorDialog(QDialog, FORM_CLASS):
         currentLayer = self.iface.mapCanvas().currentLayer()
         if currentLayer:
             selectedFeatures = len(currentLayer.selectedFeatures())
-            if selectedFeatures == 1: 
+            if selectedFeatures == 1:
                 selectedFeature = currentLayer.selectedFeatures()[0]
                 d = AzimuthsAndDistancesDialog(self.iface, selectedFeature.geometry())
                 d.exec_()

@@ -42,7 +42,7 @@ from reportlab.lib.units import mm
 
 
 from odf.opendocument import OpenDocumentText
-from odf.draw import Frame, Image, Page
+from odf.draw import Frame,Image,Page
 from odf.style import Style, TextProperties, ParagraphProperties, PageLayoutProperties, PageLayout, MasterPage, GraphicProperties, TableColumnProperties
 from odf.text import H, P, Span
 from odf.table import Table, TableColumn, TableRow, TableCell
@@ -177,7 +177,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         if self.memorialDescritivoOdt.isChecked():
             self.createFullMemorialOdt()
 
-        if self.memorialSinteticHtml.isChecked() == self.memorialDescritivoTxt.isChecked() == self.seloTxt.isChecked() == self.tableAreaCsv.isChecked() == self.memorialDescritivoPdf.isChecked() == 0:
+        if self.memorialSinteticHtml.isChecked() == self.memorialDescritivoTxt.isChecked() == self.seloTxt.isChecked() == self.tableAreaCsv.isChecked() == self.memorialDescritivoPdf.isChecked() == self.memorialDescritivoOdt.isChecked()==0:
             QMessageBox.information(self, self.tr('Attention!'), self.tr('Select at least one file type!'))
         else:
             QMessageBox.information(self, self.tr('Information!'), self.tr('Files created successfully!'))
@@ -368,7 +368,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         pathlogo = os.path.dirname(__file__)
         #print pathlogo
         logo = os.path.join(pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
-        #print logo
+        print logo
         denominacaoArea = 'ÁREA INDUBITÁVEL DA UNIÃO NA ARQ GURUPÁ'
         uf = 'PARÁ'
         city = 'CACHOEIRA DO ARARI'
@@ -381,8 +381,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         officeResponsible = 'Geografo'
         organization = 'CGIPA/SPU'
 
-        im = Image(logo, 1*inch, 1*inch)
-        Story.append(im)
+        imag= Image(logo, 1*inch, 1*inch)
+        Story.append(imag)
+
         styles=getSampleStyleSheet()
 
         # #incerindo titulo
@@ -598,11 +599,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         href = self.textdoc.addPicture(logo)
         imgframe = Frame(name="fig1", anchortype="paragraph", width="2.24cm", height="2.22cm", zindex="0", stylename=imgstyle)
         p.addElement(imgframe)
-        img = Image(href=href, type="simple", show="embed", actuate="onLoad")
+        img =Image(href=href, type="simple", show="embed", actuate="onLoad")
 
         imgframe.addElement(img)
-
-    #    arq.close()
 
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
         self.textdoc.text.addElement(h)
@@ -694,7 +693,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"NBP: ", stylename=texttable))
+        cell.addElement(P(text=u"NBP: " + self.nbp.text().decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         # Create a row (same as <tr> in HTML)
@@ -707,7 +706,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Código SNCR: ", stylename=texttable))
+        cell.addElement(P(text=u"Código INCRA: " + self.codIncraEdit.text().decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
@@ -718,7 +717,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Matrícula: " + matricula.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"RIP: " + self.rip.text().decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
@@ -726,6 +725,10 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         cell = TableCell(valuetype="text", currency="AUD")
         cell.addElement(P(text=u"Comarca: " + comarca.decode('utf-8'), stylename=texttable))
+        tr.addElement(cell)
+
+        cell = TableCell(valuetype="text", currency="AUD")
+        cell.addElement(P(text=u"Matrícula: " + matricula.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
 
@@ -773,7 +776,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         p = P(text=officeResponsible, stylename=bodystyle4)
         self.textdoc.text.addElement(p)
 
-        p = P(text=identification, stylename=bodystyle4)
+        p = P(text=self.creaCau.currentText() + ": " + identification, stylename=bodystyle4)
         self.textdoc.text.addElement(p)
 
         self.textdoc.save(self.fullMemorialOdt)
@@ -783,25 +786,38 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         description += "Inicia-se a descrição deste perímetro no vértice "+self.tableWidget.item(0,0).text()+", de coordenadas "
         description += "N "+self.tableWidget.item(0,2).text()+" m e "
         description += "E "+self.tableWidget.item(0,1).text()+" m, "
-        description += "Datum " + self.datumEdit.text()+ " com Meridiano Central " +self.meridianoEdit.text()+ ", localizado à "+self.enderecoEdit.text()+", Código INCRA " +self.codIncraEdit.text()+ "; "
+        description += "Datum " + self.datumEdit.text()+ " com Meridiano Central " +self.meridianoEdit.text()+ ", localizado à "+self.enderecoEdit.text()
+
+        if self.codIncraEdit.text():
+            description += ", Código INCRA " + self.codIncraEdit.text()+ "; "
+        else:
+            description += (";")
 
         rowCount = self.tableWidget.rowCount()
+
         for i in xrange(0,rowCount):
             side = self.tableWidget.item(i,3).text()
             sideSplit = side.split("-")
+            if self.tableWidget.item(i,7).text():
+                description += " deste, segue confrontando com "+ self.tableWidget.item(i,7).text()+", "
+                description += "com os seguintes azimute plano e distância:"
+                description += self.tableWidget.item(i,4).text()+" e "
+                description += self.tableWidget.item(i,6).text()+"; até o vértice "
+            else:
+                description += " deste, segue sem confrontante até o vértice "
 
-            description += " deste, segue confrontando com "+ self.tableWidget.item(i,7).text()+", "
-            description += "com os seguintes azimute plano e distância:"
-            description += self.tableWidget.item(i,4).text()+" e "
-            description += self.tableWidget.item(i,6).text()+"; até o vértice "
+
             if (i == rowCount - 1):
                 description += sideSplit[1]+", de coordenadas "
                 description += "N "+self.tableWidget.item(0,2).text()+" m e "
                 description += "E "+self.tableWidget.item(0,1).text()+" m, encerrando esta descrição."
-                description += " Todas as coordenadas aqui descritas estão georrefereciadas ao Sistema Geodésico Brasileiro, "
-                description += "a partir da estação RBMC de "+self.rbmcOrigemEdit.text()+" de coordenadas "
-                description += "E "+self.rbmcEsteEdit.text()+" m e N "+self.rbmcNorteEdit.text()+" m, "
-                description += "localizada em "+self.localRbmcEdit.text()+", "
+                description += " Todas as coordenadas aqui descritas estão georrefereciadas ao Sistema Geodésico Brasileiro "
+
+                if self.rbmcOrigemEdit.text():
+                    description += ", a partir da estação RBMC de "+self.rbmcOrigemEdit.text()+" de coordenadas "
+                    description += "E "+self.rbmcEsteEdit.text()+" m e N "+self.rbmcNorteEdit.text()+" m, "
+                    description += "localizada em "+self.localRbmcEdit.text()+", "
+
                 description += "e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central "+self.meridianoEdit.text()
                 description += ", tendo como DATUM "+self.datumEdit.text()+"."
                 description += "Todos os azimutes e distâncias, área e perímetro foram calculados no plano de projeção UTM."
@@ -838,10 +854,10 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             description.addText(", localizado à " + self.enderecoEdit.text())
             # boldpart = Span(stylename=boldstyle, text=)
             # description.addElement(boldpart)
-
+            self.textdoc.text.addElement(description)
             if self.codIncraEdit.text():
                 description.addText(", Código INCRA "+ self.codIncraEdit.text()+ "; ")
-                self.textdoc.text.addElement(description)
+                # self.textdoc.text.addElement(description)
             else:
                 description.addText(";")
 
@@ -851,37 +867,39 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                 side = self.tableWidget.item(i,3).text()
                 sideSplit = side.split("-")
 
+
                 if self.tableWidget.item(i,7).text():
+
                     description.addText(" deste, segue confrontando com " + self.tableWidget.item(i,7).text() + ", ")
-
-                    description.addText("com os seguintes azimute plano e distância: ")
-                    description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,4).text()))
-                    description.addText(" e ")
-
-                    description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,6).text()))
-                    description.addText("; até o vértice ")
                 else:
-                    description.addText(" deste, segue sem confrontante até o vértice ")
 
+                    description.addText(" deste, segue ")
+
+                description.addText("com os seguintes azimute plano e distância: ")
+                description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,4).text()))
+                description.addText(" e ")
+
+                description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,6).text() + "m"))
+                description.addText("; até o vértice ")
 
                 if (i == rowCount - 1):
                     description.addElement(Span(stylename=boldstyle, text=sideSplit[1]))
                     description.addText(", de coordenadas ")
 
-                    description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()))
-                    description.addText(" m e ")
+                    description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()+"m"))
+                    description.addText(" e ")
 
-                    description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(0,1).text()))
-                    description.addText(" m, encerrando esta descrição.")
+                    description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(0,1).text()+"m "))
+                    description.addText(", encerrando esta descrição.")
                     description.addText(" Todas as coordenadas aqui descritas estão georreferenciadas ao Sistema Geodésico Brasileiro")
 
                     if self.rbmcOrigemEdit.text():
 
                         description.addText(" , a partir da estação RBMC de " + self.rbmcOrigemEdit.text() + " de coordenadas ")
-                        description.addElement(Span(stylename=boldstyle, text="E " + self.rbmcEsteEdit.text()))
-                        description.addText(" m e ")
-                        description.addElement(Span(stylename=boldstyle, text="N " + self.rbmcNorteEdit.text()))
-                        description.addText(" m, ")
+                        description.addElement(Span(stylename=boldstyle, text="E " + self.rbmcEsteEdit.text() + " m"))
+                        description.addText(" e ")
+                        description.addElement(Span(stylename=boldstyle, text="N " + self.rbmcNorteEdit.text()+ " m"))
+                        description.addText(" , ")
                         description.addText("localizada em " + self.localRbmcEdit.text()+", ")
 
                     description.addText(" e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central ")
@@ -894,7 +912,8 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                     description.addElement(Span(stylename=boldstyle, text=sideSplit[1]))
                     description.addText(", de coordenadas ")
 
-                    description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(i+1,2).text()))
-                    description.addText(" m e ")
-                    description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(i+1,1).text()))
-                    description.addText(" m;")
+                    description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(i+1,2).text() + " m"))
+                    description.addText(" e ")
+                    description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(i+1,1).text() + " m"))
+                    print "ta aqui"
+                    #description.addText(" m;")

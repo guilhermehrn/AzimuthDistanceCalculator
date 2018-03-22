@@ -13,11 +13,13 @@ name=Azimuth and Distance for SPU
 qgisMinimumVersion=2.0
 description=Calculates azimuths and distances for a selected feature. The feature can be either a line or a polygon. The plugin also calculates Meridian Convergence and Kappa Factor for UTM projections to a given geographical coordinate.
 version=1.1.2
-author=Luiz Andrade
+author=Guilherme Henrique
 email=luizclaudio.andrade@eb.mil.br
 about=
 	Azimuth and Distance Calculator Version 1.0.1 also generates:
-	- Memorial descritivo
+	- Memorial descritivo em pdf
+	- Memorial descritivo em odt
+	- Memotial descritivo em txt
 	- Memorial sintético
 	- Selo da planta
 	- Planilha de áreas e perímetros
@@ -34,16 +36,16 @@ changelog=
 	1.1 - User can choose decimal places to show coordinates dynamically
 	1.1.1 - Fixing typo
 	1.1.2 - Fixing a issue when representing really small convergence values with the automated convergence calculation
-
+	1.2.1 - Generate descriptive memorials in PDF and ODT formats
 # tags are comma separated with spaces allowed
 tags=Document,UTM,Meridian,Azimuth,Patrimonial,Distance,Calculator,Factor,Convergence,Memorial,Kappa
 
 homepage=https://hub.qgis.org/projects/azimuthdistances
 tracker=https://hub.qgis.org/projects/azimuthdistances
-repository=https://github.com/lcoandrade/AzimuthDistanceCalculator
+repository=https://github.com/guilhermehrn/AzimuthDistanceCalculator.git
 icon=north.png
 # experimental flag
-experimental=False
+experimental=True
 
 # deprecated flag (applies to the whole plugin, not just a single version
 deprecated=False

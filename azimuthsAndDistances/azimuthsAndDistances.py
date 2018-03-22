@@ -30,8 +30,8 @@ from decimal import Decimal
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui_azimuthsAndDistances.ui'))
 
-from AzimuthDistanceCalculator.azimuthsAndDistances.memorialGenerator import MemorialGenerator
-from AzimuthDistanceCalculator.kappaAndConvergence.calculateKappaAndConvergence import CalculateKappaAndConvergenceDialog
+from AzimuthDistanceCalculatorSPU.azimuthsAndDistances.memorialGenerator import MemorialGenerator
+from AzimuthDistanceCalculatorSPU.kappaAndConvergence.calculateKappaAndConvergence import CalculateKappaAndConvergenceDialog
 
 class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
     """Class that calculates azimuths and distances among vertexes in a linestring.

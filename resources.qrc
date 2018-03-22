@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/azimuthdistancecalculator" >
+    <qresource prefix="/plugins/azimuthdistancecalculatorspu" >
         <file>north.png</file>
     </qresource>
 </RCC>

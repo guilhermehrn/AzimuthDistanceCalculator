@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from rlextra.rml2pdf import rml2pdf
 from odf.opendocument import OpenDocumentText
 from odf.draw import Frame, Image, Page
 from odf.style import Style, TextProperties, ParagraphProperties, PageLayoutProperties, PageLayout, MasterPage, GraphicProperties, TableColumnProperties
@@ -11,7 +12,7 @@ FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','ag
 title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO'
 title2= 'SECRETARIA DO PATRIMÔNIO DA UNIÃO'
 subTitle = 'Memorial Descritivo xxxx/2018'
-logo = 'C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculator/azimuthsAndDistances/templates/template_memorial_pdf/rep_of_brazil.png'
+logo = 'C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculatorSPU/azimuthsAndDistances/templates/template_memorial_pdf/rep_of_brazil.png'
 denominacaoArea = 'ÁREA INDUBITÁVEL DA UNIÃO NA ARQ GURUPÁ'
 uf = 'PARÁ'
 city = 'CACHOEIRA DO ARARI'
@@ -285,4 +286,11 @@ textdoc.text.addElement(p)
 p = P(text=organization, stylename=bodystyle4)
 textdoc.text.addElement(p)
 
+temp = textdoc.xml()
+
+output = 'docpdf.pdf'
+rml2pdf.go(temp, outputFileName=output)
+argw = open("xmldoc.xml", "w")
+argw.write(temp)
+argw.close()
 textdoc.save("myfirstdocument.odt")
