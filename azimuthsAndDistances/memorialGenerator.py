@@ -42,7 +42,7 @@ from reportlab.lib.units import mm
 
 
 from odf.opendocument import OpenDocumentText
-from odf.draw import Frame,Image,Page
+from odf.draw import Frame,Image as image_odf,Page
 from odf.style import Style, TextProperties, ParagraphProperties, PageLayoutProperties, PageLayout, MasterPage, GraphicProperties, TableColumnProperties
 from odf.text import H, P, Span
 from odf.table import Table, TableColumn, TableRow, TableCell
@@ -91,9 +91,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         currentPath = os.path.dirname(__file__)
         templatePath = os.path.join(currentPath, "templates")
         simpleMemorialTemplate = os.path.join(templatePath, "template_sintetico.html")
-        fullMemorialTemplate = os.path.join(templatePath, "template_memorial.txt")
+        # fullMemorialTemplate = os.path.join(templatePath, "template_memorial.txt")
         #fullMemeorialPdf=os.path.join(templatePath,"")
-        seloTemplate = os.path.join(templatePath, "template_selo.txt")
+        # seloTemplate = os.path.join(templatePath, "template_selo.txt")
         areaTemplate = os.path.join(templatePath, "template_area.txt")
 
         # folder = self.folderEdit.text()
@@ -118,13 +118,13 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                 self.simpleMemorial = os.path.join(folder, "sintetico.html")
                 shutil.copy2(simpleMemorialTemplate, self.simpleMemorial)
 
-            if self.memorialDescritivoTxt.isChecked():
-                self.fullMemorial = os.path.join(folder, "analitico.txt")
-                shutil.copy2(fullMemorialTemplate, self.fullMemorial)
+            # if self.memorialDescritivoTxt.isChecked():
+            #     self.fullMemorial = os.path.join(folder, "analitico.txt")
+            #     shutil.copy2(fullMemorialTemplate, self.fullMemorial)
 
-            if self.seloTxt.isChecked():
-                self.selo = os.path.join(folder, "selo.txt")
-                shutil.copy2(seloTemplate, self.selo)
+            # if self.seloTxt.isChecked():
+            #     self.selo = os.path.join(folder, "selo.txt")
+            #     shutil.copy2(seloTemplate, self.selo)
 
             if self.tableAreaCsv.isChecked():
                 self.area = os.path.join(folder, "area.txt")
@@ -162,11 +162,11 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         if self.memorialSinteticHtml.isChecked():
             self.createSimpleMemorial()
 
-        if self.memorialDescritivoTxt.isChecked():
-            self.createFullMemorial()
+        # if self.memorialDescritivoTxt.isChecked():
+        #     self.createFullMemorial()
 
-        if self.seloTxt.isChecked():
-            self.createSelo()
+        # if self.seloTxt.isChecked():
+        #     self.createSelo()
 
         if self.tableAreaCsv.isChecked():
             self.createArea()
@@ -177,7 +177,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         if self.memorialDescritivoOdt.isChecked():
             self.createFullMemorialOdt()
 
-        if self.memorialSinteticHtml.isChecked() == self.memorialDescritivoTxt.isChecked() == self.seloTxt.isChecked() == self.tableAreaCsv.isChecked() == self.memorialDescritivoPdf.isChecked() == self.memorialDescritivoOdt.isChecked()==0:
+        if self.memorialSinteticHtml.isChecked() == self.tableAreaCsv.isChecked() == self.memorialDescritivoPdf.isChecked() == self.memorialDescritivoOdt.isChecked()==0:
             QMessageBox.information(self, self.tr('Attention!'), self.tr('Select at least one file type!'))
         else:
             QMessageBox.information(self, self.tr('Information!'), self.tr('Files created successfully!'))
@@ -304,52 +304,52 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         area.write(newData)
         area.close()
 
-    def createSelo(self):
-        memorial = open(self.selo, "r")
-        fileData = memorial.read()
-        memorial.close()
+    # def createSelo(self):
+    #     memorial = open(self.selo, "r")
+    #     fileData = memorial.read()
+    #     memorial.close()
+    #
+    #     newData = fileData.replace("[IMOVEL]", self.imovelEdit.text())
+    #     newData = newData.replace("[CADASTRO]", self.cadastroEdit.text())
+    #     newData = newData.replace("[PROPRIETARIO]", self.proprietarioEdit.text())
+    #     newData = newData.replace("[UF]", self.ufEdit.text())
+    #     newData = newData.replace("[MATRICULA]", self.matriculaEdit.text())
+    #     newData = newData.replace("[PROJECAO]", self.projectionEdit.text())
+    #     newData = newData.replace("[KAPPA]", self.kappaEdit.text())
+    #     newData = newData.replace("[DATUM]", self.datumEdit.text())
+    #
+    #     memorial = open(self.selo, "w")
+    #     memorial.write(newData)
+    #     memorial.close()
 
-        newData = fileData.replace("[IMOVEL]", self.imovelEdit.text())
-        newData = newData.replace("[CADASTRO]", self.cadastroEdit.text())
-        newData = newData.replace("[PROPRIETARIO]", self.proprietarioEdit.text())
-        newData = newData.replace("[UF]", self.ufEdit.text())
-        newData = newData.replace("[MATRICULA]", self.matriculaEdit.text())
-        newData = newData.replace("[PROJECAO]", self.projectionEdit.text())
-        newData = newData.replace("[KAPPA]", self.kappaEdit.text())
-        newData = newData.replace("[DATUM]", self.datumEdit.text())
-
-        memorial = open(self.selo, "w")
-        memorial.write(newData)
-        memorial.close()
-
-    def createFullMemorial(self):
-        memorial = open(self.fullMemorial, "r")
-        fileData = memorial.read()
-        memorial.close()
-
-        kappa = float(self.kappaEdit.text())
-
-        newData = fileData.replace("[IMOVEL]", self.imovelEdit.text())
-        newData = newData.replace("[PROPRIETARIO]", self.proprietarioEdit.text())
-        newData = newData.replace("[UF]", self.ufEdit.text())
-        newData = newData.replace("[COD_INCRA]", self.codIncraEdit.text())
-        geomPerimeter = self.geomPerimeter/kappa
-        newData = newData.replace("[PERIMETRO]", "%0.2f"%(geomPerimeter))
-        geomArea = self.geomArea/(kappa*kappa)
-        newData = newData.replace("[AREA]", "%0.2f"%(geomArea))
-        newData = newData.replace("[COMARCA]", self.comarcaEdit.text())
-        newData = newData.replace("[MUNICIPIO]", self.municipioEdit.text())
-        newData = newData.replace("[MATRICULA]", self.matriculaEdit.text())
-        newData = newData.replace("[DESCRIPTION]", self.getDescription())
-        newData = newData.replace("[DATA]", time.strftime("%d/%m/%Y"))
-        newData = newData.replace("[AUTOR]", self.autorEdit.text())
-        newData = newData.replace("[CREA]", self.creaEdit.text())
-        newData = newData.replace("[CREDENCIAMENTO]", self.credenciamentoEdit.text())
-        newData = newData.replace("[ART]", self.artEdit.text())
-
-        memorial = open(self.fullMemorial, "w")
-        memorial.write(newData)
-        memorial.close()
+    # def createFullMemorial(self):
+    #     memorial = open(self.fullMemorial, "r")
+    #     fileData = memorial.read()
+    #     memorial.close()
+    #
+    #     kappa = float(self.kappaEdit.text())
+    #
+    #     newData = fileData.replace("[IMOVEL]", self.imovelEdit.text())
+    #     newData = newData.replace("[PROPRIETARIO]", self.proprietarioEdit.text())
+    #     newData = newData.replace("[UF]", self.ufEdit.text())
+    #     newData = newData.replace("[COD_INCRA]", self.codIncraEdit.text())
+    #     geomPerimeter = self.geomPerimeter/kappa
+    #     newData = newData.replace("[PERIMETRO]", "%0.2f"%(geomPerimeter))
+    #     geomArea = self.geomArea/(kappa*kappa)
+    #     newData = newData.replace("[AREA]", "%0.2f"%(geomArea))
+    #     newData = newData.replace("[COMARCA]", self.comarcaEdit.text())
+    #     newData = newData.replace("[MUNICIPIO]", self.municipioEdit.text())
+    #     newData = newData.replace("[MATRICULA]", self.matriculaEdit.text())
+    #     newData = newData.replace("[DESCRIPTION]", self.getDescription())
+    #     newData = newData.replace("[DATA]", time.strftime("%d/%m/%Y"))
+    #     newData = newData.replace("[AUTOR]", self.autorEdit.text())
+    #     newData = newData.replace("[CREA]", self.creaEdit.text())
+    #     newData = newData.replace("[CREDENCIAMENTO]", self.credenciamentoEdit.text())
+    #     newData = newData.replace("[ART]", self.artEdit.text())
+    #
+    #     memorial = open(self.fullMemorial, "w")
+    #     memorial.write(newData)
+    #     memorial.close()
 
     def addPageNumber(canvas, doc):
         page_num = canvas.getPageNumber()
@@ -599,7 +599,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         href = self.textdoc.addPicture(logo)
         imgframe = Frame(name="fig1", anchortype="paragraph", width="2.24cm", height="2.22cm", zindex="0", stylename=imgstyle)
         p.addElement(imgframe)
-        img =Image(href=href, type="simple", show="embed", actuate="onLoad")
+        img =image_odf(href=href, type="simple", show="embed", actuate="onLoad")
 
         imgframe.addElement(img)
 
@@ -693,7 +693,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"NBP: " + self.nbp.text().decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"NBP: " + self.nbpEdit.text().decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         # Create a row (same as <tr> in HTML)
@@ -717,7 +717,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"RIP: " + self.rip.text().decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"RIP: " + self.ripEdit.text().decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()

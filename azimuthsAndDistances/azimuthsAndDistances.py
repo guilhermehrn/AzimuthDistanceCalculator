@@ -172,7 +172,7 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
             azimuth = self.dd2dms(distancesAndAzimuths[i][1])
             realAzimuth = self.dd2dms(distancesAndAzimuths[i][1] + convergence)
 
-            itemVertex = QTableWidgetItem("Pt"+str(i))
+            itemVertex = QTableWidgetItem("P"+str(i))
             self.tableWidget.setItem(i, 0, itemVertex)
             e = Decimal(self.points[i].x()).quantize(q)
             itemE = QTableWidgetItem(str(e))
@@ -182,10 +182,10 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
             self.tableWidget.setItem(i, 2, itemN)
 
             if (i == len(distancesAndAzimuths) - 1) and isClosed:
-                itemSide = QTableWidgetItem("Pt"+str(i)+"-Pt0")
+                itemSide = QTableWidgetItem("P"+str(i)+"-P0")
                 self.tableWidget.setItem(i, 3, itemSide)
             else:
-                itemSide = QTableWidgetItem("Pt"+str(i)+"-Pt"+str(i+1))
+                itemSide = QTableWidgetItem("P"+str(i)+"-P"+str(i+1))
                 self.tableWidget.setItem(i, 3, itemSide)
 
             itemAz = QTableWidgetItem(azimuth)
