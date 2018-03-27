@@ -78,6 +78,49 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         self.projectionEdit.setText(crsDescription.split('/')[-1])
         self.datumEdit.setText(crsDescription.split('/')[0])
 
+        self.FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
+        self.pathlogo = os.path.dirname(__file__)
+        self.logo = os.path.join(self.pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
+        self.formattedTime = date.today().timetuple()
+        self.subTitle = 'Memorial Descritivo'
+
+        #dados do orgão expeditor
+        self.title = self.OrgaoExpeditorEdit.text()
+        self.title2= self.secretariaEdit.text()
+        self.superinte = self.superintenciaEdit.text()
+        self.division = self.divisaoEdit.text()
+        self.adresstitle = self.enderecoOrgaoEdit.text()
+        self.numberControl = self.numMemorialEdit.text()
+        self.numberSei = self.numeroSeiEdit.text()
+
+        #dados do imovel
+        self.denominationAreaImovel = self.imovelEdit.text()
+        self.proprietarioImovel = self.proprietarioEdit.text()
+        self.adressImovel = self.enderecoEdit.text()
+        self.cityImovel = self.municipioEdit.text()
+        self.ufImovel = self.ufEdit.text()
+        self.comarca = self.comarcaEdit.text()
+        self.matricula = self.matriculaEdit.text()
+        self.ripImovel = self.ripEdit.text()
+        self.nbpImovel = self.nbpEdit.text()
+        self.codeIncra = self.codIncraEdit.text()
+        self.plaintCor = self.plantaCorrespondenteEdit.text()
+        self.kappa = float(self.kappaEdit.text())
+        self.geomPerimeter = self.geomPerimeter/self.kappa
+        self.geomArea = self.geomArea/(self.kappa*self.kappa)
+        self.projection = self.projectionEdit.text()
+        self.meridianCenter=self.meridianoEdit.text()
+        self.datum = self.datumEdit.text()
+        self.perimeter = "%0.2f"%(geomPerimeter)
+        self.areaMetroQuad = "%0.2f"%(geomArea)
+
+        #dados do Responsavel tecnico
+        self.responsibletecName = self.autorEdit.text()
+        self.officeResponsible = self.officeResponsibleEdit.text()
+        self.addressBrCityDoc= self.mucipioResponsavelEdit.text()
+        self.tipeIdResponsible = self.creaCau.currentText()
+        self.identification = self.creaEdit.text()
+
     def setDirectory(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Directory")
         self.folderEdit.setText(folder)
@@ -94,7 +137,10 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         # fullMemorialTemplate = os.path.join(templatePath, "template_memorial.txt")
         #fullMemeorialPdf=os.path.join(templatePath,"")
         # seloTemplate = os.path.join(templatePath, "template_selo.txt")
-        areaTemplate = os.path.join(templatePath, "template_area.txt")
+        areaTemplate = os.path.join(templatePath, "template_area.csv")
+
+        nameImovel= self.imovelEdit.text()
+        prevNameFile = nameImovel.replace(" ", "_")
 
         # folder = self.folderEdit.text()
         # if self.memorialSinteticHtml.isChecked():
@@ -115,7 +161,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         else:
 
             if self.memorialSinteticHtml.isChecked():
-                self.simpleMemorial = os.path.join(folder, "sintetico.html")
+                self.simpleMemorial = os.path.join(folder, prevNameFile + "_sintetico.html")
                 shutil.copy2(simpleMemorialTemplate, self.simpleMemorial)
 
             # if self.memorialDescritivoTxt.isChecked():
@@ -127,15 +173,15 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             #     shutil.copy2(seloTemplate, self.selo)
 
             if self.tableAreaCsv.isChecked():
-                self.area = os.path.join(folder, "area.txt")
+                self.area = os.path.join(folder, prevNameFile + "_pontos.csv")
                 shutil.copy2(areaTemplate, self.area)
 
             if self.memorialDescritivoPdf.isChecked():
                 #print folder
-                self.fullMemorialPdf = os.path.join(folder, "analitico2.pdf")
+                self.fullMemorialPdf = os.path.join(folder, prevNameFile + "_memorial.pdf")
 
             if self.memorialDescritivoOdt.isChecked():
-                self.fullMemorialOdt = os.path.join(folder,"analitico3.odt")
+                self.fullMemorialOdt = os.path.join(folder, prevNameFile + "_memorial.odt")
 
     def createFiles(self):
 
@@ -193,7 +239,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             td.setAttribute("rowspan", rowspan)
         td.setAttribute("style", "border-color : #000000 #000000 #000000 #000000; border-style: solid;")
         p.setAttribute("style", " text-align: center; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;")
-        span.setAttribute("style", " font-size: 10pt; font-family: 'Arial', 'Helvetica', sans-serif; font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;")
+        span.setAttribute("style", " font-size: 10pt; font-family: 'Times new roman', 'Helvetica', sans-serif; font-style: normal; font-weight: normal; color: #000000; background-color: transparent; text-decoration: none;")
 
         textElement = tempDoc.createTextNode(text)
 
@@ -221,11 +267,13 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         table.appendChild(tr)
 
         tr = tempDoc.createElement("tr")
+
         tr.appendChild(self.createCellElement(tempDoc, u"VÉRTICE", 0, 2))
         tr.appendChild(self.createCellElement(tempDoc, "COORDENADAS", 2, 0))
         tr.appendChild(self.createCellElement(tempDoc, "LADO", 0, 2))
         tr.appendChild(self.createCellElement(tempDoc, "AZIMUTES", 2, 0))
         tr.appendChild(self.createCellElement(tempDoc, u"DISTÂNCIA", 0, 0))
+
         table.appendChild(tr)
 
         tr = tempDoc.createElement("tr")
@@ -261,29 +309,30 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         simple.close()
 
     def createArea(self):
-        area = open(self.area, "r")
-        fileData = area.read()
-        area.close()
+        # area = open(self.area, "r")
+        # fileData = area.read()
+        # area.close()
 
-        kappa = float(self.kappaEdit.text())
+        #kappa = float(self.kappaEdit.text())
 
-        newData = fileData.replace("[IMOVEL]", self.imovelEdit.text())
-        newData = newData.replace("[PROPRIETARIO]", self.proprietarioEdit.text())
-        newData = newData.replace("[MUNICIPIO]", self.municipioEdit.text())
-        newData = newData.replace("[COMARCA]", self.comarcaEdit.text())
-        newData = newData.replace("[DATUM]", self.datumEdit.text())
-        newData = newData.replace("[MERIDIANO]", self.meridianoEdit.text())
-        newData = newData.replace("[KAPPA]", self.kappaEdit.text())
-        geomPerimeter = self.geomPerimeter/kappa
-        newData = newData.replace("[PERIMETRO]", "%0.2f"%(geomPerimeter))
-        geomArea = self.geomArea/(kappa*kappa)
-        newData = newData.replace("[AREA]", "%0.2f"%(geomArea))
+        # newData = fileData.replace("[IMOVEL]", self.imovelEdit.text())
+        # newData = newData.replace("[PROPRIETARIO]", self.proprietarioEdit.text())
+        # newData = newData.replace("[MUNICIPIO]", self.municipioEdit.text())
+        # newData = newData.replace("[COMARCA]", self.comarcaEdit.text())
+        # newData = newData.replace("[DATUM]", self.datumEdit.text())
+        # newData = newData.replace("[MERIDIANO]", self.meridianoEdit.text())
+        # newData = newData.replace("[KAPPA]", self.kappaEdit.text())
+        # geomPerimeter = self.geomPerimeter/kappa
+        # newData = newData.replace("[PERIMETRO]", "%0.2f"%(geomPerimeter))
+        # geomArea = self.geomArea/(kappa*kappa)
+        # newData = newData.replace("[AREA]", "%0.2f"%(geomArea))
+        #
+        # newData += "\n"
+        # newData += "\n"
+        # newData += "\n"
 
-        newData += "\n"
-        newData += "\n"
-        newData += "\n"
-
-        newData += "Estação    Vante    Coordenada E    Coordenada N    Az Plano    Az Real    Distância\n"
+        newData = ""
+        # "Estação    Vante    Coordenada E    Coordenada N    Az Plano    Az Real    Distância\n"
 
         rowCount = self.tableWidget.rowCount()
 
@@ -291,18 +340,22 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             line  = str()
             side = self.tableWidget.item(i,3).text()
             sideSplit = side.split("-")
-            line += sideSplit[0]+"    "+sideSplit[1]+"    "
-            line += self.tableWidget.item(i,1).text()+"    "
-            line += self.tableWidget.item(i,2).text()+"    "
-            line += self.tableWidget.item(i,4).text()+"    "
-            line += self.tableWidget.item(i,5).text()+"    "
+            line += '"'+ sideSplit[0]+'";"'+sideSplit[1]+'";'
+            line += self.tableWidget.item(i,1).text()+";"
+            line += self.tableWidget.item(i,2).text()+";"
+            line += self.tableWidget.item(i,4).text()+";"
+            line += self.tableWidget.item(i,5).text()+";"
             line += self.tableWidget.item(i,6).text()+"\n"
 
             newData += line
 
-        area = open(self.area, "w")
-        area.write(newData)
-        area.close()
+        fileCsv = open(self.area, "r")
+        content = fileCsv.readlines()
+
+        content.append(newData)
+        fileCsv = open(self.area, "w")
+        fileCsv.writelines(content)
+        fileCsv.close()
 
     # def createSelo(self):
     #     memorial = open(self.selo, "r")
@@ -469,41 +522,41 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         doc.build(Story)
 
     def createFullMemorialOdt(self):
-        FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
-        pathlogo = os.path.dirname(__file__)
-        logo = os.path.join(pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
-        formattedTime = date.today().timetuple()
-
-        kappa = float(self.kappaEdit.text())
-        geomPerimeter = self.geomPerimeter/kappa
-        geomArea = self.geomArea/(kappa*kappa)
-
-        title = self.OrgaoExpeditorEdit.text()
-        title2= self.secretariaEdit.text()
-        subTitle = 'Memorial Descritivo'
-
-        #logo = 'C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculator/azimuthsAndDistances/templates/template_memorial_pdf/rep_of_brazil.png'
-        denominationArea = self.imovelEdit.text()
-        uf = self.ufEdit.text()
-        city = self.municipioEdit.text()
-        sistemGeodesicoRef = self.projectionEdit.text()
-        sistemProjectionCartografic = 'UTM 22 SUL'
-        perimeter = "%0.2f"%(geomPerimeter)
-        areaMetroQuad = "%0.2f"%(geomArea)
-        adressImovel = self.enderecoEdit.text()
-        matricula = self.matriculaEdit.text()
-        propertario = self.proprietarioEdit.text()
-        idMemorial = self.numMemorialEdit.text()
-        comarca = self.comarcaEdit.text()
-
-        addressBrCityDoc= "_________________"
-        responsibletecName = self.autorEdit.text()
-        officeResponsible = self.officeResponsibleEdit.text()
-        identification = self.creaEdit.text()
-
-        Superinte = self.superintenciaEdit.text()
-        division = self.divisaoEdit.text()
-        adresstitle= self.enderecoOrgaoEdit.text()
+        # FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
+        # pathlogo = os.path.dirname(__file__)
+        # logo = os.path.join(pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
+        # formattedTime = date.today().timetuple()
+        #
+        # kappa = float(self.kappaEdit.text())
+        # geomPerimeter = self.geomPerimeter/kappa
+        # geomArea = self.geomArea/(kappa*kappa)
+        #
+        # title = self.OrgaoExpeditorEdit.text()
+        # title2= self.secretariaEdit.text()
+        # subTitle = 'Memorial Descritivo'
+        #
+        # #logo = 'C:/Users/09726968658/.qgis2/python/plugins/AzimuthDistanceCalculator/azimuthsAndDistances/templates/template_memorial_pdf/rep_of_brazil.png'
+        # denominationArea = self.imovelEdit.text()
+        # uf = self.ufEdit.text()
+        # city = self.municipioEdit.text()
+        # sistemGeodesicoRef = self.projectionEdit.text()
+        # sistemProjectionCartografic = 'UTM 22 SUL'
+        # perimeter = "%0.2f"%(geomPerimeter)
+        # areaMetroQuad = "%0.2f"%(geomArea)
+        # adressImovel = self.enderecoEdit.text()
+        # matricula = self.matriculaEdit.text()
+        # propertario = self.proprietarioEdit.text()
+        # idMemorial = self.numMemorialEdit.text()
+        # comarca = self.comarcaEdit.text()
+        #
+        # addressBrCityDoc= "_________________"
+        # responsibletecName = self.autorEdit.text()
+        # officeResponsible = self.officeResponsibleEdit.text()
+        # identification = self.creaEdit.text()
+        #
+        # Superinte = self.superintenciaEdit.text()
+        # division = self.divisaoEdit.text()
+        # adresstitle= self.enderecoOrgaoEdit.text()
 
 
 
@@ -596,7 +649,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         #insert image
         p=P()
         self.textdoc.text.addElement(p)
-        href = self.textdoc.addPicture(logo)
+        href = self.textdoc.addPicture(self.logo)
         imgframe = Frame(name="fig1", anchortype="paragraph", width="2.24cm", height="2.22cm", zindex="0", stylename=imgstyle)
         p.addElement(imgframe)
         img =image_odf(href=href, type="simple", show="embed", actuate="onLoad")
@@ -618,21 +671,21 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
         self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=h1style, text=title.decode('utf-8').upper())
+        h=H(outlinelevel=1, stylename=h1style, text=self.title.decode('utf-8').upper())
         self.textdoc.text.addElement(h)
-        h=H(outlinelevel=1, stylename=h1style, text=title2.decode('utf-8').upper())
+        h=H(outlinelevel=1, stylename=h1style, text=self.title2.decode('utf-8').upper())
         self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
         self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=h1style2, text=Superinte.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style2, text=self.superinte.decode('utf-8'))
         self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=h1style2a, text=division.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style2a, text=self.division.decode('utf-8'))
         self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=addressTitle, text=adresstitle.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=addressTitle, text=self.adresstitle.decode('utf-8'))
         self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
@@ -640,9 +693,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
 
         if self.numMemorialEdit.text():
-            subTitle = subTitle +' ' + idMemorial + '/' + str(formattedTime[0])
+            subTitle = self.subTitle +' '+ self.idMemorial
         else:
-            subTitle = subTitle + ' ' + str(formattedTime[0])
+            subTitle = self.subTitle
 
         h=H(outlinelevel=1, stylename=h1style3, text=subTitle.decode('utf-8'))
         self.textdoc.text.addElement(h)
@@ -664,21 +717,21 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         # Create a cell with a negative value. It should show as red.
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Imóvel: " + denominationArea.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Imóvel: " + self.denominationAreaImovel.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Proprietário: " + propertario.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Proprietário: " + self.proprietarioImovel.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Endereço: " + adressImovel.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Endereço: " + self.adressImovel.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         # Create a column (same as <col> in HTML) Make all cells in column default to currency
@@ -689,11 +742,11 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         table.addElement(tr)
         # Create a cell with a negative value. It should show as red.
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Município/UF: " + city.decode('utf-8') + '/' + uf.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Município/UF: " + self.cityImovel.decode('utf-8') + '/' + self.ufImovel.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"NBP: " + self.nbpEdit.text().decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text="NBP: " + self.nbpImovel.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         # Create a row (same as <tr> in HTML)
@@ -702,7 +755,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         # Create another cell but with a positive value. It should show in black
 
         cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Perímetro (m): " + str(perimeter), stylename=texttable))
+        cell.addElement(P(text=u"Perímetro (m): " + str(self.perimeter), stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD", value="123")
@@ -713,7 +766,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Área (m²): " + str(areaMetroQuad), stylename=texttable))
+        cell.addElement(P(text=u"Área (m²): " + str(self.areaMetroQuad), stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
@@ -724,11 +777,11 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Comarca: " + comarca.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Comarca: " + self.comarca.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Matrícula: " + matricula.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Matrícula: " + self.matricula.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
 
@@ -761,7 +814,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
         self.textdoc.text.addElement(h)
 
-        p = P(text=addressBrCityDoc + ", " + str(formattedTime[2]) + " de " + FULL_MONTHS[formattedTime[1]-1] + " de " + str(formattedTime[0]), stylename=bodystyle2)
+        p = P(text=self.addressBrCityDoc + ", " + str(self.formattedTime[2]) + " de " + self.FULL_MONTHS[self.formattedTime[1]-1] + " de " + str(self.formattedTime[0]), stylename=bodystyle2)
         self.textdoc.text.addElement(p)
 
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
@@ -770,13 +823,13 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
         self.textdoc.text.addElement(h)
 
-        p = P(text=responsibletecName, stylename=bodystyle3)
+        p = P(text=self.responsibletecName, stylename=bodystyle3)
         self.textdoc.text.addElement(p)
 
-        p = P(text=officeResponsible, stylename=bodystyle4)
+        p = P(text=self.officeResponsible, stylename=bodystyle4)
         self.textdoc.text.addElement(p)
 
-        p = P(text=self.creaCau.currentText() + ": " + identification, stylename=bodystyle4)
+        p = P(text=self.creaCau.currentText() + ": " + self.identification, stylename=bodystyle4)
         self.textdoc.text.addElement(p)
 
         self.textdoc.save(self.fullMemorialOdt)

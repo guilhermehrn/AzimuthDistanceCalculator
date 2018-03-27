@@ -58,7 +58,7 @@
             <string>Gerar uma tabela CSV com as coordenadas dos pontos da geometria selecionada.</string>
            </property>
            <property name="text">
-            <string>Tabela com area(.csv)</string>
+            <string>Tabela com pontos(.csv)</string>
            </property>
           </widget>
          </item>
