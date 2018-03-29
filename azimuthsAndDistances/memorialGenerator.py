@@ -23,6 +23,7 @@ import shutil
 import os
 import time
 import sys
+import locale
 
 
 from PyQt4 import uic
@@ -74,9 +75,12 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         self.geomArea = geomArea
         self.geomPerimeter = geomPerimeter
 
+        print crsDescription
         self.meridianoEdit.setText(str(centralMeridian))
         self.projectionEdit.setText(crsDescription.split('/')[-1])
         self.datumEdit.setText(crsDescription.split('/')[0])
+
+
 
         self.FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
         self.pathlogo = os.path.dirname(__file__)
@@ -676,8 +680,8 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=h1style, text=self.title2.decode('utf-8').upper())
         self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
-        self.textdoc.text.addElement(h)
+        # h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
+        # self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=h1style2, text=self.superinte.decode('utf-8'))
         self.textdoc.text.addElement(h)
@@ -693,7 +697,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
 
         if self.numMemorialEdit.text():
-            subTitle = self.subTitle +' '+ self.idMemorial
+            subTitle = self.subTitle +' '+ self.numberControl
         else:
             subTitle = self.subTitle
 
@@ -746,7 +750,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text="NBP: " + self.nbpImovel.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Matrícula: " + self.matricula.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         # Create a row (same as <tr> in HTML)
@@ -758,8 +762,9 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         cell.addElement(P(text=u"Perímetro (m): " + str(self.perimeter), stylename=texttable))
         tr.addElement(cell)
 
-        cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Código INCRA: " + self.codIncraEdit.text().decode('utf-8'), stylename=texttable))
+
+        cell = TableCell(valuetype="text", currency="AUD")
+        cell.addElement(P(text="NBP: " + self.nbpImovel.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
@@ -780,9 +785,10 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         cell.addElement(P(text=u"Comarca: " + self.comarca.decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Matrícula: " + self.matricula.decode('utf-8'), stylename=texttable))
+        cell = TableCell(valuetype="text", currency="AUD", value="123")
+        cell.addElement(P(text=u"Código INCRA: " + self.codIncraEdit.text().decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
+
 
 
 
@@ -836,6 +842,8 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
     def getDescription(self):
         description = str()
+        description += "O imóvel descrito abaixo corresponde um de" + self.areaMetroQuad + "m², localizado à" + self.adressImovel + ", no município de" + self.cityImovel +"/" + self.ufImovel + "representado na planta" + self.plaintCor + ", processo SEI: " + self.numberSei+ "."
+        description += "\n"
         description += "Inicia-se a descrição deste perímetro no vértice "+self.tableWidget.item(0,0).text()+", de coordenadas "
         description += "N "+self.tableWidget.item(0,2).text()+" m e "
         description += "E "+self.tableWidget.item(0,1).text()+" m, "
@@ -882,13 +890,32 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         return description
 
     def insertDescriptionodt(self):
-
+            #locale.setlocale(locale.LC_ALL, ("pt_BR",""))
             boldstyle = Style(name="Bold", family="text")
             boldprop = TextProperties(fontweight="bold")
             boldstyle.addElement(boldprop)
             self.textdoc.automaticstyles.addElement(boldstyle)
 
+
             description = P(stylename=self.bodystyle)
+            description.addText("O imóvel descrito abaixo corresponde um terreno de " + self.areaMetroQuad + " m², localizado à " + self.adressImovel + ", no município de " + self.cityImovel +"/" + self.ufImovel + ", representado na planta " + self.plaintCor + ", processo SEI: " + self.numberSei)
+
+            if self.codIncraEdit.text():
+                description.addText(", código INCRA "+ self.codIncraEdit.text()+ ".")
+                # self.textdoc.text.addElement(description)
+            else:
+                description.addText(".")
+
+            self.textdoc.text.addElement(description)
+
+            description = P(stylename=self.bodystyle)
+            description.addText("\n\n")
+            self.textdoc.text.addElement(description)
+
+            description = P(stylename=self.bodystyle)
+            description.addText("\n\n")
+            self.textdoc.text.addElement(description)
+
             description.addText("Inicia-se a descrição deste perímetro no vértice ")
             description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(0,0).text()))
 
@@ -898,52 +925,61 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             description.addText(" m e ")
             description.addElement(Span(stylename=boldstyle, text="E " + self.tableWidget.item(0,1).text()))
 
-            description.addText(" m, DATUM ")
-            description.addElement(Span(stylename=boldstyle, text=self.datumEdit.text()))
-
-            description.addText(" com Meridiano Central ")
-            description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
-
-            description.addText(", localizado à " + self.enderecoEdit.text())
+            # description.addText(" m, DATUM ")
+            # description.addElement(Span(stylename=boldstyle, text=self.datumEdit.text()))
+            #
+            # description.addText(" com Meridiano Central ")
+            # description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
+            #
+            # description.addText(", localizado à " + self.enderecoEdit.text())
             # boldpart = Span(stylename=boldstyle, text=)
             # description.addElement(boldpart)
             self.textdoc.text.addElement(description)
-            if self.codIncraEdit.text():
-                description.addText(", Código INCRA "+ self.codIncraEdit.text()+ "; ")
-                # self.textdoc.text.addElement(description)
-            else:
-                description.addText(";")
 
             rowCount = self.tableWidget.rowCount()
+            itemPrev =''
 
             for i in xrange(0,rowCount):
                 side = self.tableWidget.item(i,3).text()
                 sideSplit = side.split("-")
 
-
                 if self.tableWidget.item(i,7).text():
+                    if self.tableWidget.item(i,7).text() != itemPrev:
 
-                    description.addText(" deste, segue confrontando com " + self.tableWidget.item(i,7).text() + ", ")
+                        description.addText("; deste, segue confrontando com ")
+                        description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,7).text().upper()))
+                        description.addText(", ")
+                    else:
+                        description.addText("; deste, segue ")
                 else:
 
-                    description.addText(" deste, segue ")
+                    description.addText("; deste, segue ")
 
                 description.addText("com os seguintes azimute plano e distância: ")
                 description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,4).text()))
                 description.addText(" e ")
 
-                description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,6).text() + "m"))
+                description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,6).text() + " m"))
                 description.addText("; até o vértice ")
-
+                itemPrev = self.tableWidget.item(i,7).text()
                 if (i == rowCount - 1):
                     description.addElement(Span(stylename=boldstyle, text=sideSplit[1]))
                     description.addText(", de coordenadas ")
 
-                    description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()+"m"))
+                    description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()+" m"))
                     description.addText(" e ")
 
-                    description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(0,1).text()+"m "))
+                    description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(0,1).text()+" m"))
                     description.addText(", encerrando esta descrição.")
+
+                    description = P(stylename=self.bodystyle)
+                    description.addText("\n\n")
+                    self.textdoc.text.addElement(description)
+
+                    description = P(stylename=self.bodystyle)
+                    description.addText("\n\n")
+                    self.textdoc.text.addElement(description)
+
                     description.addText(" Todas as coordenadas aqui descritas estão georreferenciadas ao Sistema Geodésico Brasileiro")
 
                     if self.rbmcOrigemEdit.text():
@@ -955,8 +991,13 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                         description.addText(" , ")
                         description.addText("localizada em " + self.localRbmcEdit.text()+", ")
 
+                    sp = self.projectionEdit.text().decode("utf-8").split(" ")[3]
+                    print "tai: " + sp
                     description.addText(" e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central ")
                     description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
+                    description.addText(", Fuso " + str(sp))
+
+
 
                     description.addText(", tendo como DATUM ")
                     description.addElement(Span(stylename=boldstyle, text=self.datumEdit.text()))
