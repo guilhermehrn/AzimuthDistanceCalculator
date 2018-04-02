@@ -37,6 +37,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Table as TablePDF, TableStyle
 from datetime import date
 from reportlab.lib.units import mm
 
@@ -417,77 +418,102 @@ class MemorialGenerator(QDialog, FORM_CLASS):
     def createFullMemorialPdf(self):
         print 1
         #print self.fullMemorialPdf
-        FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
+        # FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
         doc = SimpleDocTemplate(self.fullMemorialPdf,pagesize=letter,rightMargin=85,leftMargin=85,topMargin=71,bottomMargin=35)
         Story=[]
-        title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO SECRETARIA DO PATRIMÔNIO DA UNIÃO'
-        subTitle = 'Memorial Descritivo'
-        pathlogo = os.path.dirname(__file__)
-        #print pathlogo
-        logo = os.path.join(pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
-        print logo
-        denominacaoArea = 'ÁREA INDUBITÁVEL DA UNIÃO NA ARQ GURUPÁ'
-        uf = 'PARÁ'
-        city = 'CACHOEIRA DO ARARI'
-        sistemGeodesicoRef = 'SIRGAS 2000'
-        sistemProjectionCartografic = 'UTM 22 SUL'
-        perimetroMetro = '137974.18'
-        areaMetroQuad = '34726602.21'
-        addressBr= 'Brasilia'
-        responsible = 'ANTONIO AFONSO CORDEIRO JUNIOR'
-        officeResponsible = 'Geografo'
-        organization = 'CGIPA/SPU'
+        # title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO SECRETARIA DO PATRIMÔNIO DA UNIÃO'
+        # subTitle = 'Memorial Descritivo'
+        # pathlogo = os.path.dirname(__file__)
+        # #print pathlogo
+        # logo = os.path.join(pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
+        # print logo
+        # denominacaoArea = 'ÁREA INDUBITÁVEL DA UNIÃO NA ARQ GURUPÁ'
+        # uf = 'PARÁ'
+        # city = 'CACHOEIRA DO ARARI'
+        # sistemGeodesicoRef = 'SIRGAS 2000'
+        # sistemProjectionCartografic = 'UTM 22 SUL'
+        # perimetroMetro = '137974.18'
+        # areaMetroQuad = '34726602.21'
+        # addressBr= 'Brasilia'
+        # responsible = 'ANTONIO AFONSO CORDEIRO JUNIOR'
+        # officeResponsible = 'Geografo'
+        # organization = 'CGIPA/SPU'
 
-        imag= Image(logo, 1*inch, 1*inch)
-        Story.append(imag)
+        im = Image(self.logo, 1*inch, 1*inch)
+
+        Story.append(im)
 
         styles=getSampleStyleSheet()
 
-        # #incerindo titulo
+        #incerinto titulo
+        Story.append(Spacer(1, 11))
         styles.add(ParagraphStyle(name='Center', alignment=TA_CENTER, fontName="Times-Bold"))
-        ptext = '<font size=12>%s</font>' % title
-        Story.append(Spacer(2, 12))
+        ptext = '<font size=10.5>%s</font>' %self.title.upper()
         Story.append(Paragraph(ptext, styles["Center"]))
-        Story.append(Spacer(1, 12))
 
-        # #incerindo subtitulo
-        #
-        ptext = '<font size=12>%s</font>' % subTitle
+        ptext = '<font size=10.5>%s</font>' %self.title2.upper()
         Story.append(Paragraph(ptext, styles["Center"]))
-        Story.append(Spacer(1, 12))
+
+        #incerindo subtitulo
+
+        ptext = '<font size=10>%s</font>' %self.superinte
+        Story.append(Paragraph(ptext, styles["Center"]))
+
+        ptext = '<font size=10>%s</font>' %self.division
+        Story.append(Paragraph(ptext, styles["Center"]))
+
+        styles.add(ParagraphStyle(name='adress', alignment=TA_CENTER, fontName="Times-Roman"))
+        ptext = '<font size=9>%s</font>' %self.adresstitle
+        Story.append(Paragraph(ptext, styles["adress"]))
+        Story.append(Spacer(1, 11))
+
 
         #incerindo Metadados
 
-        styles.add(ParagraphStyle(name='Left', alignment=TA_LEFT, fontName="Times-Bold"))
+        styles.add(ParagraphStyle(name='titlemem', alignment=TA_CENTER, fontName="Times-Bold"))
 
-        ptext = '<font size=12 fontName="Times-Bold">Denominação da Área: </font>' + '<font size=12>%s</font>' % denominacaoArea
-        Story.append(Paragraph(ptext, styles["Normal"]))
-        Story.append(Spacer(1, 12))
 
-        ptext = '<font size=12 fontName="Times-Bold">UF: </font>' + '<font size=12>%s</font>' % uf
-        Story.append(Paragraph(ptext, styles["Normal"]))
-        Story.append(Spacer(1, 12))
+        if self.numMemorialEdit.text():
+            subTitle = self.subTitle +' '+ self.numberControl
+        else:
+            subTitle = self.subTitle
 
-        ptext = '<font size=12 fontName="Times-Bold">Municipio(s): </font>' + '<font size=12>%s</font>' % city
-        Story.append(Paragraph(ptext, styles["Normal"]))
-        Story.append(Spacer(1, 12))
+        ptext = '<font size=12><u>%s</u></font>' % subTitle
+        Story.append(Paragraph(ptext, styles["titlemem"]))
+        Story.append(Spacer(1, 11))
 
-        ptext = '<font size=12 fontName="Times-Bold">Sistema Geodésico de Referência: </font>' + '<font size=12>%s</font>' % sistemGeodesicoRef
-        Story.append(Paragraph(ptext, styles["Normal"]))
-        Story.append(Spacer(1, 12))
 
-        ptext = '<font size=12 fontName="Times-Bold">Sistema de Projeção Cartográfica: </font>' + '<font size=12>%s</font>' % sistemProjectionCartografic
-        Story.append(Paragraph(ptext, styles["Normal"]))
-        Story.append(Spacer(1, 12))
+        data=[["Imovel: " + self.denominationAreaImovel], ["Proprietario: " + self.proprietarioImovel], ["Endereço: " + self.adressImovel]]
 
-        ptext = '<font size=12 fontName="Times-Bold">Perímetro(m): </font>' + '<font size=12>%s</font>' % perimetroMetro
-        Story.append(Paragraph(ptext, styles["Normal"]))
-        Story.append(Spacer(1, 12))
+        t = TablePDF(data, colWidths=(156*mm), rowHeights=(5*mm, 5*mm, 5*mm))
 
-        t = u'\xb2'.decode('utf-8')
-        ptext = '<font size=12 fontName="Times-Bold">Área(m'+ t +')</font>' + '<font size=12>%s</font>' % areaMetroQuad
-        Story.append(Paragraph(ptext, styles["Normal"]))
-        Story.append(Spacer(1, 12))
+        t.setStyle(TableStyle([('ALIGN',(0,0),(0,2),'LEFT'),
+                               #('BOX',(0,0),(0,2),0,colors.black),
+                               #('GRID',(0,0),(0,2),0.5,colors.black),
+                               ('FONT',(0,0),(0,2),'Times-Roman',10.5)]))
+        Story.append(t)
+
+        data=[["Município/UF: " + self.cityImovel + "/"+ self.ufImovel, "Matrícula: " + self.matricula],
+                ["Perímetro(m): " + self.perimeter,"NBP: " + self.nbpImovel],
+                ["Área(m²): " + self.areaMetroQuad, "RIP: " + self.ripImovel ],
+                ["Comarca: " + self.comarca, "Código INCRA: " + self.codeIncra]]
+
+        t = TablePDF(data, colWidths=(78* mm, 78*mm), rowHeights=(5*mm, 5*mm, 5*mm, 5*mm ) )
+        t.setStyle(TableStyle([('ALIGN',(0,0),(1,3),'LEFT'),
+                               #('BOX',(0,0),(1,3),0,colors.black),
+                               #('GRID',(0,0),(1,3),0.5,colors.black),
+                               ('FONT',(0,0),(1,3),'Times-Roman',10.5)]))
+
+        Story.append(t)
+
+        Story.append(Spacer(1, 11))
+        ptext = '<font size=12>%s</font>' %"DESCRIÇÂO"
+        Story.append(Paragraph(ptext, styles["Center"]))
+        Story.append(Spacer(1, 11))
+
+
+
+        #============================================================================
 
         Story.append(Spacer(1, 12))
         styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
@@ -501,26 +527,30 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         # #Add data e local
         #
-        formattedTime = date.today().timetuple()
-        textdataLocal = addressBr + ", " + str(formattedTime[2]) + " de " + FULL_MONTHS[formattedTime[1]-1] + " de " + str(formattedTime[0])
+        #formattedTime = date.today().timetuple()
+        textdataLocal = self.addressBrCityDoc + ", " + str(self.formattedTime[2]) + " de " + self.FULL_MONTHS[self.formattedTime[1]-1] + " de " + str(self.formattedTime[0])
+
         styles.add(ParagraphStyle(name='dateLocal', alignment=TA_RIGHT, fontName="Times-Roman"))
         ptext = '<font size=12> %s</font>' % textdataLocal
         Story.append(Paragraph(ptext, styles["dateLocal"]))
         Story.append(Spacer(1, 12))
-        #
-        #saddlocal assinatual
-        #
-        Story.append(Spacer(1, 12))
-        Story.append(Spacer(1, 12))
-        ptext = '<font size=12>____________________________________________________</font>'
-        Story.append(Paragraph(ptext, styles["Center"]))
-        ptext = '<font size=12>%s</font>' %responsible
-        Story.append(Paragraph(ptext, styles["Center"]))
-        ptext = '<font size=12>%s</font>' %officeResponsible
-        Story.append(Paragraph(ptext, styles["Center"]))
-        ptext = '<font size=12>%s</font>' % organization
+
+        #addlocal assinatura
+
+        Story.append(Spacer(1, 11))
+        Story.append(Spacer(1, 11))
+        # ptext = '<font size=12>____________________________________________________</font>'
+        # Story.append(Paragraph(ptext, styles["Center"]))
+
+
+        styles.add(ParagraphStyle(name='style01', alignment=TA_CENTER, fontName="Times-Roman"))
+        ptext = '<font size=11>%s</font>' %self.responsibletecName
         Story.append(Paragraph(ptext, styles["Center"]))
 
+        ptext = '<font size=11>%s</font>' %self.officeResponsible
+        Story.append(Paragraph(ptext, styles["style01"]))
+        ptext = '<font size=11>%s</font>' % self.tipeIdResponsible + ': ' + self.identification
+        Story.append(Paragraph(ptext, styles["style01"]))
         # #arquivo.close()
         #doc.build(Story, onFirstPage=addPageNumber, onLaterPages=addPageNumber)
         doc.build(Story)
@@ -1010,4 +1040,128 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                     description.addText(" e ")
                     description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(i+1,1).text() + " m"))
                     print "ta aqui"
-                    #description.addText(" m;")
+
+                #description.addText(" m;")
+
+    def insertDescriptionPDF(self):
+        #locale.setlocale(locale.LC_ALL, ("pt_BR",""))
+        boldstyle = Style(name="Bold", family="text")
+        boldprop = TextProperties(fontweight="bold")
+        boldstyle.addElement(boldprop)
+        self.textdoc.automaticstyles.addElement(boldstyle)
+
+
+        description = P(stylename=self.bodystyle)
+        description.addText("O imóvel descrito abaixo corresponde um terreno de " + self.areaMetroQuad + " m², localizado à " + self.adressImovel + ", no município de " + self.cityImovel +"/" + self.ufImovel + ", representado na planta " + self.plaintCor + ", processo SEI: " + self.numberSei)
+
+        if self.codIncraEdit.text():
+            description.addText(", código INCRA "+ self.codIncraEdit.text()+ ".")
+            # self.textdoc.text.addElement(description)
+        else:
+            description.addText(".")
+
+        self.textdoc.text.addElement(description)
+
+        description = P(stylename=self.bodystyle)
+        description.addText("\n\n")
+        self.textdoc.text.addElement(description)
+
+        description = P(stylename=self.bodystyle)
+        description.addText("\n\n")
+        self.textdoc.text.addElement(description)
+
+        description.addText("Inicia-se a descrição deste perímetro no vértice ")
+        description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(0,0).text()))
+
+        description.addText(", de coordenadas ")
+        description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()))
+
+        description.addText(" m e ")
+        description.addElement(Span(stylename=boldstyle, text="E " + self.tableWidget.item(0,1).text()))
+
+        # description.addText(" m, DATUM ")
+        # description.addElement(Span(stylename=boldstyle, text=self.datumEdit.text()))
+        #
+        # description.addText(" com Meridiano Central ")
+        # description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
+        #
+        # description.addText(", localizado à " + self.enderecoEdit.text())
+        # boldpart = Span(stylename=boldstyle, text=)
+        # description.addElement(boldpart)
+        self.textdoc.text.addElement(description)
+
+        rowCount = self.tableWidget.rowCount()
+        itemPrev =''
+
+        for i in xrange(0,rowCount):
+            side = self.tableWidget.item(i,3).text()
+            sideSplit = side.split("-")
+
+            if self.tableWidget.item(i,7).text():
+                if self.tableWidget.item(i,7).text() != itemPrev:
+
+                    description.addText("; deste, segue confrontando com ")
+                    description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,7).text().upper()))
+                    description.addText(", ")
+                else:
+                    description.addText("; deste, segue ")
+            else:
+
+                description.addText("; deste, segue ")
+
+            description.addText("com os seguintes azimute plano e distância: ")
+            description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,4).text()))
+            description.addText(" e ")
+
+            description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,6).text() + " m"))
+            description.addText("; até o vértice ")
+            itemPrev = self.tableWidget.item(i,7).text()
+            if (i == rowCount - 1):
+                description.addElement(Span(stylename=boldstyle, text=sideSplit[1]))
+                description.addText(", de coordenadas ")
+
+                description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()+" m"))
+                description.addText(" e ")
+
+                description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(0,1).text()+" m"))
+                description.addText(", encerrando esta descrição.")
+
+                description = P(stylename=self.bodystyle)
+                description.addText("\n\n")
+                self.textdoc.text.addElement(description)
+
+                description = P(stylename=self.bodystyle)
+                description.addText("\n\n")
+                self.textdoc.text.addElement(description)
+
+                description.addText(" Todas as coordenadas aqui descritas estão georreferenciadas ao Sistema Geodésico Brasileiro")
+
+                if self.rbmcOrigemEdit.text():
+
+                    description.addText(" , a partir da estação RBMC de " + self.rbmcOrigemEdit.text() + " de coordenadas ")
+                    description.addElement(Span(stylename=boldstyle, text="E " + self.rbmcEsteEdit.text() + " m"))
+                    description.addText(" e ")
+                    description.addElement(Span(stylename=boldstyle, text="N " + self.rbmcNorteEdit.text()+ " m"))
+                    description.addText(" , ")
+                    description.addText("localizada em " + self.localRbmcEdit.text()+", ")
+
+                sp = self.projectionEdit.text().decode("utf-8").split(" ")[3]
+                print "tai: " + sp
+                description.addText(" e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central ")
+                description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
+                description.addText(", Fuso " + str(sp))
+
+
+
+                description.addText(", tendo como DATUM ")
+                description.addElement(Span(stylename=boldstyle, text=self.datumEdit.text()))
+                description.addText(". Todos os azimutes e distâncias, área e perímetro foram calculados no plano de projeção UTM.")
+            else:
+                description.addElement(Span(stylename=boldstyle, text=sideSplit[1]))
+                description.addText(", de coordenadas ")
+
+                description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(i+1,2).text() + " m"))
+                description.addText(" e ")
+                description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(i+1,1).text() + " m"))
+                print "ta aqui"
+                #description.addText(" m;")
