@@ -419,7 +419,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         print 1
         #print self.fullMemorialPdf
         # FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
-        doc = SimpleDocTemplate(self.fullMemorialPdf,pagesize=letter,rightMargin=85,leftMargin=85,topMargin=71,bottomMargin=35)
+        doc = SimpleDocTemplate(self.fullMemorialPdf,pagesize=letter,rightMargin=85,leftMargin=85,topMargin=51,bottomMargin=35)
         Story=[]
         # title = 'MINISTÉRIO DO PLANEJAMENTO, DESENVOLVIMENTO E GESTÃO SECRETARIA DO PATRIMÔNIO DA UNIÃO'
         # subTitle = 'Memorial Descritivo'
@@ -516,11 +516,11 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         #============================================================================
 
         Story.append(Spacer(1, 12))
-        styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+        styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY, fontName="Times-Roman"))
         #
         # #add texto do memorial.
         #
-        ptext = self.getDescription()
+        ptext = self.insertDescriptionPDF()
         #
         Story.append(Paragraph(ptext, styles["Justify"]))
         Story.append(Spacer(1, 12))
@@ -1025,7 +1025,8 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                     print "tai: " + sp
                     description.addText(" e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central ")
                     description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
-                    description.addText(", Fuso " + str(sp))
+                    description.addText(", Fuso ")
+                    description.addElement(Span(stylename=boldstyle, text=str(sp)))
 
 
 
@@ -1045,51 +1046,27 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
     def insertDescriptionPDF(self):
         #locale.setlocale(locale.LC_ALL, ("pt_BR",""))
-        boldstyle = Style(name="Bold", family="text")
-        boldprop = TextProperties(fontweight="bold")
-        boldstyle.addElement(boldprop)
-        self.textdoc.automaticstyles.addElement(boldstyle)
-
-
-        description = P(stylename=self.bodystyle)
-        description.addText("O imóvel descrito abaixo corresponde um terreno de " + self.areaMetroQuad + " m², localizado à " + self.adressImovel + ", no município de " + self.cityImovel +"/" + self.ufImovel + ", representado na planta " + self.plaintCor + ", processo SEI: " + self.numberSei)
+        ptex = "O imóvel descrito abaixo corresponde um terreno de " + self.areaMetroQuad + " m², localizado à " + self.adressImovel + ", no município de " + self.cityImovel +"/" + self.ufImovel + ", representado na planta " + self.plaintCor + ", processo SEI: " + self.numberSei
 
         if self.codIncraEdit.text():
-            description.addText(", código INCRA "+ self.codIncraEdit.text()+ ".")
+            ptex += ", código INCRA "+ self.codIncraEdit.text()+ "."
             # self.textdoc.text.addElement(description)
         else:
-            description.addText(".")
+            ptex += "."
 
-        self.textdoc.text.addElement(description)
+        ptex += "<br></br><br></br>"
 
-        description = P(stylename=self.bodystyle)
-        description.addText("\n\n")
-        self.textdoc.text.addElement(description)
-
-        description = P(stylename=self.bodystyle)
-        description.addText("\n\n")
-        self.textdoc.text.addElement(description)
-
-        description.addText("Inicia-se a descrição deste perímetro no vértice ")
-        description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(0,0).text()))
-
-        description.addText(", de coordenadas ")
-        description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()))
-
-        description.addText(" m e ")
-        description.addElement(Span(stylename=boldstyle, text="E " + self.tableWidget.item(0,1).text()))
-
-        # description.addText(" m, DATUM ")
-        # description.addElement(Span(stylename=boldstyle, text=self.datumEdit.text()))
+        # description = P(stylename=self.bodystyle)
+        # description.addText("\n\n")
+        # self.textdoc.text.addElement(description)
         #
-        # description.addText(" com Meridiano Central ")
-        # description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
-        #
-        # description.addText(", localizado à " + self.enderecoEdit.text())
-        # boldpart = Span(stylename=boldstyle, text=)
-        # description.addElement(boldpart)
-        self.textdoc.text.addElement(description)
+        ptex += "Inicia-se a descrição deste perímetro no vértice "
 
+        ptex +='<font size=11 name="Times-Bold"> %s </font>' %self.tableWidget.item(0,0).text()
+        ptex +=", de coordenadas "
+
+        ptex +='<font size=11 name="Times-Bold">N %s m</font>' %self.tableWidget.item(0,2).text() + " e " +'<font size=11 name="Times-Bold">E %s m</font>' %self.tableWidget.item(0,1).text()
+        #
         rowCount = self.tableWidget.rowCount()
         itemPrev =''
 
@@ -1100,68 +1077,56 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             if self.tableWidget.item(i,7).text():
                 if self.tableWidget.item(i,7).text() != itemPrev:
 
-                    description.addText("; deste, segue confrontando com ")
-                    description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,7).text().upper()))
-                    description.addText(", ")
+                    ptex += "; deste, segue confrontando com "
+                    ptex += '<font size=11 name="Times-Bold"> %s </font>' %self.tableWidget.item(i,7).text().upper()
+                    ptex += ", "
                 else:
-                    description.addText("; deste, segue ")
+                    ptex += "; deste, segue "
             else:
 
-                description.addText("; deste, segue ")
+                ptex += "; deste, segue "
 
-            description.addText("com os seguintes azimute plano e distância: ")
-            description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,4).text()))
-            description.addText(" e ")
+            ptex +="com os seguintes azimute plano e distância: "
+            ptex += '<font size=11 name="Times-Bold"> %s </font>'%self.tableWidget.item(i,4).text()
+            ptex += " e "
 
-            description.addElement(Span(stylename=boldstyle, text=self.tableWidget.item(i,6).text() + " m"))
-            description.addText("; até o vértice ")
+            ptex += '<font size=11 name="Times-Bold"> %s m</font>' %self.tableWidget.item(i,6).text()
+            ptex += "; até o vértice "
             itemPrev = self.tableWidget.item(i,7).text()
+
             if (i == rowCount - 1):
-                description.addElement(Span(stylename=boldstyle, text=sideSplit[1]))
-                description.addText(", de coordenadas ")
-
-                description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(0,2).text()+" m"))
-                description.addText(" e ")
-
-                description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(0,1).text()+" m"))
-                description.addText(", encerrando esta descrição.")
-
-                description = P(stylename=self.bodystyle)
-                description.addText("\n\n")
-                self.textdoc.text.addElement(description)
-
-                description = P(stylename=self.bodystyle)
-                description.addText("\n\n")
-                self.textdoc.text.addElement(description)
-
-                description.addText(" Todas as coordenadas aqui descritas estão georreferenciadas ao Sistema Geodésico Brasileiro")
+                ptex += '<font size=11 name="Times-Bold"> %s </font>' % sideSplit[1]
+                ptex += ", de coordenadas "
+                ptex += '<font size=11 name="Times-Bold">N %s m</font>' %self.tableWidget.item(0,2).text()
+                ptex +=" e "
+                ptex += '<font size=11 name="Times-Bold"> E %s m</font>' %self.tableWidget.item(0,1).text()
+                ptex +=", encerrando esta descrição."
+                ptex += "<br></br><br></br>"
+                ptex += " Todas as coordenadas aqui descritas estão georreferenciadas ao Sistema Geodésico Brasileiro"
 
                 if self.rbmcOrigemEdit.text():
-
-                    description.addText(" , a partir da estação RBMC de " + self.rbmcOrigemEdit.text() + " de coordenadas ")
-                    description.addElement(Span(stylename=boldstyle, text="E " + self.rbmcEsteEdit.text() + " m"))
-                    description.addText(" e ")
-                    description.addElement(Span(stylename=boldstyle, text="N " + self.rbmcNorteEdit.text()+ " m"))
-                    description.addText(" , ")
-                    description.addText("localizada em " + self.localRbmcEdit.text()+", ")
+                    ptex +=" , a partir da estação RBMC de " + self.rbmcOrigemEdit.text() + " de coordenadas "
+                    ptex += '<font size=11 name="Times-Bold">E %s m</font>' %self.rbmcEsteEdit.text()
+                    ptex += " e "
+                    ptex +='<font size=11 name="Times-Bold">N %s m</font>' % self.rbmcNorteEdit.text()
+                    ptex += " , "
+                    ptex +="localizada em " + self.localRbmcEdit.text()+", "
 
                 sp = self.projectionEdit.text().decode("utf-8").split(" ")[3]
-                print "tai: " + sp
-                description.addText(" e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central ")
-                description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
-                description.addText(", Fuso " + str(sp))
+                ptex += " e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central "
+                ptex += '<font size=11 name="Times-Bold"> %s </font>' %self.meridianoEdit.text()
+                ptex += ", Fuso " + '<font size=11 name="Times-Bold"> %s </font>' %str(sp)
 
+                ptex += ", tendo como DATUM "
+                ptex += '<font size=11 name="Times-Bold"> %s </font>' %self.datumEdit.text()
+                ptex += ". Todos os azimutes e distâncias, área e perímetro foram calculados no plano de projeção UTM."
 
-
-                description.addText(", tendo como DATUM ")
-                description.addElement(Span(stylename=boldstyle, text=self.datumEdit.text()))
-                description.addText(". Todos os azimutes e distâncias, área e perímetro foram calculados no plano de projeção UTM.")
             else:
-                description.addElement(Span(stylename=boldstyle, text=sideSplit[1]))
-                description.addText(", de coordenadas ")
-
-                description.addElement(Span(stylename=boldstyle, text="N "+ self.tableWidget.item(i+1,2).text() + " m"))
-                description.addText(" e ")
-                description.addElement(Span(stylename=boldstyle, text="E "+self.tableWidget.item(i+1,1).text() + " m"))
-                print "ta aqui"
+                ptex += '<font size=11 name="Times-Bold"> %s </font>' %sideSplit[1]
+                ptex +=", de coordenadas "
+                ptex += '<font size=11 name="Times-Bold">N %s m</font>' %self.tableWidget.item(i+1,2).text()
+                ptex += " e "
+                ptex += '<font size=11 name="Times-Bold">E %s m</font>' %self.tableWidget.item(i+1,1).text()
+        #         print "ta aqui"
                 #description.addText(" m;")
+        return ptex
