@@ -29,18 +29,20 @@
         <translation>Calcular Azimutes e Distancias</translation>
     </message>
     <message>
-        <location filename="ui_azimuthdistancecalculator.ui" line="40"/>
+        <location filename="ui_azimuthdistancecalculator.ui" line="25"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600; color:#ff0000;&quot;&gt;All files generated are made according to the brazilian laws. Feel free to check the code and make the documents in your language.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; font-style:italic; color:#000000;&quot;&gt;Note: All files generated are made according to the brazilian laws. Feel free to check the code and make the documents in your language.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+
+<translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600; color:#ff0000;&quot;&gt;Todos os arquivos gerados são feitos de acordo com a legislação brasileira. Sinta-se livre para conferir o código e fazer os documentos no seu idioma.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; font-style:italic; color:#000000;&quot;&gt;Nota: Todos os arquivos gerados são feitos de acordo com a legislação brasileira. Sinta-se livre para conferir o código e fazer os documentos no seu idioma.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+
+        </message>
     <message>
         <location filename="ui_azimuthdistancecalculator.ui" line="14"/>
         <source>AzimuthDistanceCalculator</source>
@@ -372,14 +374,44 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MemorialGenerator</name>
     <message>
-        <location filename="azimuthsAndDistances/memorialGenerator.py" line="96"/>
+        <location filename="azimuthsAndDistances/memorialGenerator.py" line="150"/>
+        <source>Attention!</source>
+        <translation>Atenção!</translation>
+    </message>
+    <message>
+        <location filename="azimuthsAndDistances/memorialGenerator.py" line="150"/>
+        <source>A directory should be selected!</source>
+        <translation>Um diretório deve ser selecionado!</translation>
+    </message>
+    <message>
+        <location filename="azimuthsAndDistances/memorialGenerator.py" line="184"/>
+        <source>Attention!</source>
+        <translation>Atenção!</translation>
+    </message>
+    <message>
+        <location filename="azimuthsAndDistances/memorialGenerator.py" line="184"/>
+        <source>Select at least one file type!</source>
+        <translation>Selecione pelo meno um tipo de arquivo!</translation>
+    </message>
+    <message>
+        <location filename="azimuthsAndDistances/memorialGenerator.py" line="186"/>
         <source>Information!</source>
         <translation>Informação!</translation>
     </message>
     <message>
-        <location filename="azimuthsAndDistances/memorialGenerator.py" line="96"/>
+        <location filename="azimuthsAndDistances/memorialGenerator.py" line="186"/>
         <source>Files created successfully!</source>
         <translation>Arquivos criados com sucesso!</translation>
+    </message>
+    <message>
+        <location filename="azimuthsAndDistances/memorialGenerator.py" line="189"/>
+        <source>ERROR!</source>
+        <translation>ERRO!</translation>
+    </message>
+    <message>
+        <location filename="azimuthsAndDistances/memorialGenerator.py" line="189"/>
+        <source>You must be trying to modify or replace an existing file that is being used by another program.</source>
+        <translation>Você deve estar tentando modificar ou substituir um arquivo existente que está sendo usado por outro programa.</translation>
     </message>
 </context>
 </TS>
