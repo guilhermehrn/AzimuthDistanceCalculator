@@ -14,15 +14,14 @@ qgisMinimumVersion=2.0
 description=Calculates azimuths and distances for a selected feature. The feature can be either a line or a polygon. The plugin also calculates Meridian Convergence and Kappa Factor for UTM projections to a given geographical coordinate.
 version=1.1.2
 author=Guilherme Henrique
-email=luizclaudio.andrade@eb.mil.br
+email=guilherme.nascimento@planejamento.gov.br
+
 about=
-	Azimuth and Distance Calculator Version 1.0.1 also generates:
+	Azimuth and Distance Calculator Version 1.2.2 also generates:
 	- Memorial descritivo em pdf
 	- Memorial descritivo em odt
-	- Memotial descritivo em txt
-	- Memorial sintético
-	- Selo da planta
-	- Planilha de áreas e perímetros
+	- tabela em CSV dos pontos
+	- Memorial sintético em html
 
 # end of mandatory metadata
 
@@ -37,6 +36,7 @@ changelog=
 	1.1.1 - Fixing typo
 	1.1.2 - Fixing a issue when representing really small convergence values with the automated convergence calculation
 	1.2.1 - Generate descriptive memorials in PDF and ODT formats
+	1.2.2 - Generate table CSV and html
 # tags are comma separated with spaces allowed
 tags=Document,UTM,Meridian,Azimuth,Patrimonial,Distance,Calculator,Factor,Convergence,Memorial,Kappa
 
