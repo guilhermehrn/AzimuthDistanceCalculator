@@ -89,42 +89,42 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         self.formattedTime = date.today().timetuple()
         self.subTitle = 'Memorial Descritivo'
 
-        #dados do orgão expeditor
-        self.title = self.OrgaoExpeditorEdit.text()
-        self.title2= self.secretariaEdit.text()
-        self.superinte = self.superintenciaEdit.text()
-        self.division = self.divisaoEdit.text()
-        self.adresstitle = self.enderecoOrgaoEdit.text()
-        self.numberControl = self.numMemorialEdit.text()
-        self.numberSei = self.numeroSeiEdit.text()
-
-        #dados do imovel
-        self.denominationAreaImovel = self.imovelEdit.text()
-        self.proprietarioImovel = self.proprietarioEdit.text()
-        self.adressImovel = self.enderecoEdit.text()
-        self.cityImovel = self.municipioEdit.text()
-        self.ufImovel = self.ufEdit.text()
-        self.comarca = self.comarcaEdit.text()
-        self.matricula = self.matriculaEdit.text()
-        self.ripImovel = self.ripEdit.text()
-        self.nbpImovel = self.nbpEdit.text()
-        self.codeIncra = self.codIncraEdit.text()
-        self.plaintCor = self.plantaCorrespondenteEdit.text()
-        self.kappa = float(self.kappaEdit.text())
-        self.geomPerimeter = self.geomPerimeter/self.kappa
-        self.geomArea = self.geomArea/(self.kappa*self.kappa)
-        self.projection = self.projectionEdit.text()
-        self.meridianCenter=self.meridianoEdit.text()
-        self.datum = self.datumEdit.text()
-        self.perimeter = "%0.2f"%(geomPerimeter)
-        self.areaMetroQuad = "%0.2f"%(geomArea)
-
-        #dados do Responsavel tecnico
-        self.responsibletecName = self.autorEdit.text()
-        self.officeResponsible = self.officeResponsibleEdit.text()
-        self.addressBrCityDoc= self.mucipioResponsavelEdit.text()
-        self.tipeIdResponsible = self.creaCau.currentText()
-        self.identification = self.creaEdit.text()
+        # #dados do orgão expeditor
+        # self.title = self.OrgaoExpeditorEdit.text()
+        # self.title2= self.secretariaEdit.text()
+        # self.superinte = self.superintenciaEdit.text()
+        # self.division = self.divisaoEdit.text()
+        # self.adresstitle = self.enderecoOrgaoEdit.text()
+        # self.numberControl = self.numMemorialEdit.text()
+        # self.numberSei = self.numeroSeiEdit.text()
+        #
+        # #dados do imovel
+        # self.denominationAreaImovel = self.imovelEdit.text()
+        # self.proprietarioImovel = self.proprietarioEdit.text()
+        # self.adressImovel = self.enderecoEdit.text()
+        # self.cityImovel = self.municipioEdit.text()
+        # self.ufImovel = self.ufEdit.text()
+        # self.comarca = self.comarcaEdit.text()
+        # self.matricula = self.matriculaEdit.text()
+        # self.ripImovel = self.ripEdit.text()
+        # self.nbpImovel = self.nbpEdit.text()
+        # self.codeIncra = self.codIncraEdit.text()
+        # self.plaintCor = self.plantaCorrespondenteEdit.text()
+        # self.kappa = float(self.kappaEdit.text())
+        # self.geomPerimeter = self.geomPerimeter/self.kappa
+        # self.geomArea = self.geomArea/(self.kappa*self.kappa)
+        # self.projection = self.projectionEdit.text()
+        # self.meridianCenter=self.meridianoEdit.text()
+        # self.datum = self.datumEdit.text()
+        # self.perimeter = "%0.2f"%(geomPerimeter)
+        # self.areaMetroQuad = "%0.2f"%(geomArea)
+        #
+        # #dados do Responsavel tecnico
+        # self.responsibletecName = self.autorEdit.text()
+        # self.officeResponsible = self.officeResponsibleEdit.text()
+        # self.addressBrCityDoc= self.mucipioResponsavelEdit.text()
+        # self.tipeIdResponsible = self.creaCau.currentText()
+        # self.identification = self.creaEdit.text()
 
     def setDirectory(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Directory")
@@ -166,6 +166,43 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                 self.fullMemorialOdt = os.path.join(folder, prevNameFile + "_memorial.odt")
 
     def createFiles(self):
+        #dados do orgão expeditor
+        self.title = self.OrgaoExpeditorEdit.text()
+        self.title2= self.secretariaEdit.text()
+        self.superinte = self.superintenciaEdit.text()
+        self.division = self.divisaoEdit.text()
+        self.adresstitle = self.enderecoOrgaoEdit.text()
+        self.numberControl = self.numMemorialEdit.text()
+        self.numberSei = self.numeroSeiEdit.text()
+
+        #dados do imovel
+        self.denominationAreaImovel = self.imovelEdit.text()
+        self.proprietarioImovel = self.proprietarioEdit.text()
+        self.adressImovel = self.enderecoEdit.text()
+        self.cityImovel = self.municipioEdit.text()
+        self.ufImovel = self.ufEdit.text()
+        self.comarca = self.comarcaEdit.text()
+        self.matricula = self.matriculaEdit.text()
+        self.ripImovel = self.ripEdit.text()
+        self.nbpImovel = self.nbpEdit.text()
+        self.codeIncra = self.codIncraEdit.text()
+        self.plaintCor = self.plantaCorrespondenteEdit.text()
+        self.kappa = float(self.kappaEdit.text())
+        self.geomPerimeter = self.geomPerimeter/self.kappa
+        self.geomArea = self.geomArea/(self.kappa*self.kappa)
+        self.projection = self.projectionEdit.text()
+        self.meridianCenter=self.meridianoEdit.text()
+        self.datum = self.datumEdit.text()
+        self.perimeter = "%0.2f"%(self.geomPerimeter)
+        self.areaMetroQuad = "%0.2f"%(self.geomArea)
+
+        #dados do Responsavel tecnico
+        self.responsibletecName = self.autorEdit.text()
+        self.officeResponsible = self.officeResponsibleEdit.text()
+        self.addressBrCityDoc= self.mucipioResponsavelEdit.text()
+        self.tipeIdResponsible = self.creaCau.currentText()
+        self.identification = self.creaEdit.text()
+
         self.copyAndRenameFiles()
         try:
             if self.memorialSinteticHtml.isChecked():
@@ -557,7 +594,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         # Create a cell with a negative value. It should show as red.
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Imóvel: " + self.denominationAreaImovel.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Imóvel: " + str(self.denominationAreaImovel).decode('utf-8'), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
