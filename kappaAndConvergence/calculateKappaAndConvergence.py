@@ -19,10 +19,18 @@
  *                                                                         *
  ***************************************************************************/
 """
+
+from builtins import str
+
 import os
-from PyQt4 import uic
-from PyQt4.QtGui import QDialog
-from qgis.core import QgsCoordinateReferenceSystem, QgsDistanceArea, QgsCoordinateTransform, QgsPoint
+#from PyQt4 import uic
+#from PyQt4.QtGui import QDialog
+#from qgis.core import QgsCoordinateReferenceSystem, QgsDistanceArea, QgsCoordinateTransform, QgsPoint
+
+from qgis.PyQt import uic
+from qgis.PyQt.QtWidgets import QDialog
+from qgis.core import QgsCoordinateReferenceSystem, QgsDistanceArea, QgsCoordinateTransform, QgsPointXY, QgsProject
+
 
 import math
 
@@ -35,16 +43,16 @@ class CalculateKappaAndConvergenceDialog(QDialog, FORM_CLASS):
         """
         QDialog.__init__( self )
         self.setupUi( self )
-        
+
         self.iface = iface
-        
+
         # Connecting SIGNAL/SLOTS for the Output button
         self.calculateButton.clicked.connect(self.fillTextEdit)
         self.clearButton.clicked.connect(self.clearTextEdit)
 
         self.latEdit.setInputMask("#00.00000")
         self.longEdit.setInputMask("#000.00000")
-    
+
     def calculateKappa(self):
         """Calculates the linear deformation factor (Kappa) for UTM projections
         """
@@ -54,13 +62,13 @@ class CalculateKappaAndConvergenceDialog(QDialog, FORM_CLASS):
         centralMeridian = int(abs(longitude)/6)*6 + 3
         if longitude < 0:
             centralMeridian = centralMeridian*(-1)
-        
+
         b = math.cos(math.radians(latitude))*math.sin(math.radians(longitude - centralMeridian))
-        
+
         k = kappaZero/math.sqrt(1 - b*b)
-        
+
         return k
-    
+
     def calculateConvergence(self, a, b):
         """Calculates the meridian convergence
         """
@@ -101,22 +109,22 @@ class CalculateKappaAndConvergenceDialog(QDialog, FORM_CLASS):
         distanceArea.setEllipsoid(currentLayer.crs().ellipsoidAcronym())
         a = distanceArea.ellipsoidSemiMajor()
         b = distanceArea.ellipsoidSemiMinor()
-        
+
         return (a,b)
-    
+
     def getPlanarCoordinates(self):
         """Transform the geographic coordinates to projected coordinates
         """
         latitude = float(self.latEdit.text())
         longitude = float(self.longEdit.text())
-        
+
         crsDest = self.iface.mapCanvas().currentLayer().crs()
         crsSrc = QgsCoordinateReferenceSystem(crsDest.geographicCRSAuthId())
-        
-        coordinateTransformer = QgsCoordinateTransform(crsSrc, crsDest)
-        
+
+        coordinateTransformer = QgsCoordinateTransform(crsSrc, crsDest, QgsProject.instance())
+
         utmPoint = coordinateTransformer.transform(QgsPoint(longitude, latitude))
-        
+
         return utmPoint
 
     def getGeographicCoordinates(self, x, y):
@@ -127,7 +135,7 @@ class CalculateKappaAndConvergenceDialog(QDialog, FORM_CLASS):
 
         coordinateTransformer = QgsCoordinateTransform(crsSrc, crsDest)
 
-        geoPoint = coordinateTransformer.transform(QgsPoint(x, y))
+        geoPoint = coordinateTransformer.transform(QgsPointXY(x, y))
 
         return geoPoint
 
@@ -142,21 +150,21 @@ class CalculateKappaAndConvergenceDialog(QDialog, FORM_CLASS):
         """Fills the text area with the calculated information
         """
         self.textEdit.clear()
-        
+
         latitude = float(self.latEdit.text())
         longitude = float(self.longEdit.text())
         centralMeridian = self.getCentralMeridian(longitude)
         utmZone = int(centralMeridian/6) + 31
-        
+
         ab = self.getSemiMajorAndSemiMinorAxis()
-        
+
         reducedKappa = self.calculateKappa()
         c = self.calculateConvergence(ab[0], ab[1])
-        
+
         convergence = self.dd2dms(c)
-        
+
         utmPoint = self.getPlanarCoordinates()
-        
+
         self.textEdit.append("N = "+str(utmPoint.y())+"\n")
         self.textEdit.append("E = "+str(utmPoint.x())+"\n")
         self.textEdit.append("Long = "+str(longitude)+"\n")
@@ -166,7 +174,7 @@ class CalculateKappaAndConvergenceDialog(QDialog, FORM_CLASS):
         self.textEdit.append(self.tr("Kappa = ")+str(reducedKappa)+"\n")
         self.textEdit.append(self.tr("Convergence DMS = ")+convergence+"\n")
         self.textEdit.append(self.tr("Convergence Decimal Degrees = ")+str(c)+"\n")
-        
+
     def clearTextEdit(self):
         self.textEdit.clear()
 

@@ -19,17 +19,22 @@
  *                                                                         *
  ***************************************************************************/
 """
+
+from __future__ import absolute_import
 import os
 
-from PyQt4 import uic
-from PyQt4.QtGui import QMessageBox, QDialog
+#from PyQt4 import uic
+#from PyQt4.QtGui import QMessageBox, QDialog
+
+from qgis.PyQt import uic
+from qgis.PyQt.QtWidgets import QMessageBox, QDialog
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui_azimuthdistancecalculator.ui'))
 
 # Import specific modules
-from AzimuthDistanceCalculatorSPU.kappaAndConvergence.calculateKappaAndConvergence import CalculateKappaAndConvergenceDialog
-from AzimuthDistanceCalculatorSPU.azimuthsAndDistances.azimuthsAndDistances import AzimuthsAndDistancesDialog
+from .kappaAndConvergence.calculateKappaAndConvergence import CalculateKappaAndConvergenceDialog
+from .azimuthsAndDistances.azimuthsAndDistances import AzimuthsAndDistancesDialog
 
 class AzimuthDistanceCalculatorDialog(QDialog, FORM_CLASS):
     def __init__(self, iface):

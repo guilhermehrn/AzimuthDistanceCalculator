@@ -20,33 +20,37 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
+
+
 import os
 import sys
 import imp
 
-#from __future__ import absolute_import
+
 currentDirectoryPath = os.path.dirname(__file__)
-print currentDirectoryPath
+#print currentDirectoryPath
 
 libraryDirectoryPath = os.path.join(currentDirectoryPath, 'ENV/Lib/site-packages')
-print libraryDirectoryPath
+#print libraryDirectoryPath
 sys.path.append(libraryDirectoryPath)
 
 libraryDirectoryPath = os.path.join(currentDirectoryPath, 'ENV/Lib/distutils')
-print libraryDirectoryPath
+#print libraryDirectoryPath
 #name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
 sys.path.append(libraryDirectoryPath)
 
 libraryDirectoryPath = os.path.join(currentDirectoryPath, 'ENV/Lib')
-print libraryDirectoryPath
+#print libraryDirectoryPath
 #name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib'
 sys.path.append(libraryDirectoryPath)
 
 libraryDirectoryPath = os.path.join(currentDirectoryPath, 'ENV/Lib/distutils')
-print libraryDirectoryPath
+#print libraryDirectoryPath
 #name_lib_dir  = name_lib_dir +'\.qgis2\python\plugins\AzimuthDistanceCalculator\ENV\Lib\distutils'
+
+from __future__ import absolute_import
 sys.path.append(libraryDirectoryPath)
 def classFactory(iface):
     # load AzimuthDistanceCalculator class from file AzimuthDistanceCalculator
-    from azimuthdistancecalculator import AzimuthDistanceCalculator
+    from .azimuthdistancecalculator import AzimuthDistanceCalculator
     return AzimuthDistanceCalculator(iface)

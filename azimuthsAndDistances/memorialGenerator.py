@@ -26,10 +26,16 @@ import sys
 import locale
 
 
-from PyQt4 import uic
-from PyQt4.QtCore import QFile, QIODevice
-from PyQt4.QtGui import QFileDialog, QMessageBox, QDialog
-from PyQt4.QtXml import QDomDocument
+#from PyQt4 import uic
+#from PyQt4.QtCore import QFile, QIODevice
+#from PyQt4.QtGui import QFileDialog, QMessageBox, QDialog
+#from PyQt4.QtXml import QDomDocument
+
+
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import QFile, QIODevice
+from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox, QDialog
+from qgis.PyQt.QtXml import QDomDocument
 
 
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT, TA_RIGHT

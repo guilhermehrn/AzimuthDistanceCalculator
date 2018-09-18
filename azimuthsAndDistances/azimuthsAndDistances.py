@@ -19,10 +19,18 @@
  *                                                                         *
  ***************************************************************************/
 """
+
+from builtins import str
+from builtins import range
+
 import os
-from PyQt4 import uic
-from PyQt4.QtGui import QDialog, QTableWidgetItem, QMessageBox
-from qgis.core import QGis, QgsGeometry
+#from PyQt4 import uic
+#from PyQt4.QtGui import QDialog, QTableWidgetItem, QMessageBox
+#from qgis.core import QGis, QgsGeometry
+
+from qgis.PyQt import uic
+from qgis.PyQt.QtWidgets import QDialog, QTableWidgetItem, QMessageBox
+from qgis.core import QgsWkbTypes, QgsGeometry
 
 import math
 from decimal import Decimal
@@ -30,8 +38,8 @@ from decimal import Decimal
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui_azimuthsAndDistances.ui'))
 
-from AzimuthDistanceCalculatorSPU.azimuthsAndDistances.memorialGenerator import MemorialGenerator
-from AzimuthDistanceCalculatorSPU.kappaAndConvergence.calculateKappaAndConvergence import CalculateKappaAndConvergenceDialog
+from .memorialGenerator import MemorialGenerator
+from ..kappaAndConvergence.calculateKappaAndConvergence import CalculateKappaAndConvergenceDialog
 
 class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
     """Class that calculates azimuths and distances among vertexes in a linestring.
@@ -115,12 +123,13 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
             QMessageBox.information(self.iface.mainWindow(), self.tr("Warning!"), self.tr("The limit of a patrimonial area must be a single part geometry."))
             return False
 
-        if self.geom.type() == QGis.Line:
+        #if self.geom.type() == QGis.Line:
+        if self.geom.type() == QgsWkbTypes.LineGeometry:
             self.points = self.geom.asPolyline()
             if self.points[0].y() < self.points[-1].y():
                 self.points = self.points[::-1]
             return True
-        elif self.geom.type() == QGis.Polygon:
+        elif self.geom.type() == QgsWkbTypes.PolygonGeometry:
             points = self.setClockWiseRotation(self.geom.asPolygon()[0])
             yMax = self.geom.boundingBox().yMaximum()
             self.points = self.setFirstPointToNorth(points, yMax)
