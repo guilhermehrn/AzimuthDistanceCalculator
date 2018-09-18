@@ -24,6 +24,7 @@ import os
 import sys
 import imp
 
+#from __future__ import absolute_import
 currentDirectoryPath = os.path.dirname(__file__)
 print currentDirectoryPath
 
