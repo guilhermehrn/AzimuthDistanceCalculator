@@ -119,11 +119,11 @@ class CalculateKappaAndConvergenceDialog(QDialog, FORM_CLASS):
         longitude = float(self.longEdit.text())
 
         crsDest = self.iface.mapCanvas().currentLayer().crs()
-        crsSrc = QgsCoordinateReferenceSystem(crsDest.geographicCRSAuthId())
+        crsSrc = QgsCoordinateReferenceSystem(crsDest.geographicCrsAuthId())
 
         coordinateTransformer = QgsCoordinateTransform(crsSrc, crsDest, QgsProject.instance())
 
-        utmPoint = coordinateTransformer.transform(QgsPoint(longitude, latitude))
+        utmPoint = coordinateTransformer.transform(QgsPointXY(longitude, latitude))
 
         return utmPoint
 
@@ -131,9 +131,9 @@ class CalculateKappaAndConvergenceDialog(QDialog, FORM_CLASS):
         """Transform the planar coordinates to geographic coordinates
         """
         crsSrc = self.iface.mapCanvas().currentLayer().crs()
-        crsDest = QgsCoordinateReferenceSystem(crsSrc.geographicCRSAuthId())
+        crsDest = QgsCoordinateReferenceSystem(crsSrc.geographicCRsAuthId())
 
-        coordinateTransformer = QgsCoordinateTransform(crsSrc, crsDest)
+        coordinateTransformer = QgsCoordinateTransform(crsSrc, crsDest, QgsProject.instance())
 
         geoPoint = coordinateTransformer.transform(QgsPointXY(x, y))
 

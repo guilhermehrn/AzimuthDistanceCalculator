@@ -36,7 +36,7 @@ from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion
 
 from . import resources_rc
 
-import resources_rc
+#import resources_rc
 
 from .azimuthdistancecalculatordialog import AzimuthDistanceCalculatorDialog
 
