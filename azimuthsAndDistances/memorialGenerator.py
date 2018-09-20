@@ -47,6 +47,7 @@ from reportlab.platypus import SimpleDocTemplate, Table as TablePDF, TableStyle
 from datetime import date
 from reportlab.lib.units import mm
 
+from importlib import reload
 
 
 from odf.opendocument import OpenDocumentText
@@ -59,7 +60,7 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'ui_memorialGenerator.ui'))
 
 reload(sys)
-sys.setdefaultencoding('utf-8')
+#sys.setdefaultencoding('utf-8')
 
 class MemorialGenerator(QDialog, FORM_CLASS):
 
@@ -82,7 +83,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         self.geomArea = geomArea
         self.geomPerimeter = geomPerimeter
 
-        print crsDescription
+        #print crsDescription
         self.meridianoEdit.setText(str(centralMeridian))
         self.projectionEdit.setText(crsDescription.split('/')[-1])
         self.datumEdit.setText(crsDescription.split('/')[0])
@@ -844,7 +845,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                         description.addText("localizada em " + self.localRbmcEdit.text()+", ")
 
                     sp = self.projectionEdit.text().decode("utf-8").split(" ")[3]
-                    print "tai: " + sp
+                    #print "tai: " + sp
                     description.addText(" e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central ")
                     description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
                     description.addText(", Fuso ")
