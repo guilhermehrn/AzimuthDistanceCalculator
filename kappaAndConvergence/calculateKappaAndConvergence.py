@@ -131,7 +131,7 @@ class CalculateKappaAndConvergenceDialog(QDialog, FORM_CLASS):
         """Transform the planar coordinates to geographic coordinates
         """
         crsSrc = self.iface.mapCanvas().currentLayer().crs()
-        crsDest = QgsCoordinateReferenceSystem(crsSrc.geographicCRsAuthId())
+        crsDest = QgsCoordinateReferenceSystem(crsSrc.geographicCrsAuthId())
 
         coordinateTransformer = QgsCoordinateTransform(crsSrc, crsDest, QgsProject.instance())
 

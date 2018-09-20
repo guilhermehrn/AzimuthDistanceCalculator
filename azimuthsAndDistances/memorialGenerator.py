@@ -25,6 +25,8 @@ import time
 import sys
 import locale
 
+from builtins import str
+from builtins import range
 
 #from PyQt4 import uic
 #from PyQt4.QtCore import QFile, QIODevice
@@ -92,7 +94,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         self.FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
         self.pathlogo = os.path.dirname(__file__)
-        self.logo = os.path.join(self.pathlogo, 'templates/template_memorial_pdf/rep_of_brazil.png')
+        self.logo = os.path.join(self.pathlogo, 'templates/template_memorial_pdf/rep_of_brazil2.jpg')
         self.formattedTime = date.today().timetuple()
         self.subTitle = 'Memorial Descritivo'
 
@@ -292,7 +294,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         rowCount = self.tableWidget.rowCount()
 
-        for i in xrange(0,rowCount):
+        for i in range(0,rowCount):
             lineElement = tempDoc.createElement("tr")
 
             lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,0).text(), 0, 0))
@@ -318,7 +320,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         rowCount = self.tableWidget.rowCount()
 
-        for i in xrange(0,rowCount):
+        for i in range(0,rowCount):
             line  = str()
             side = self.tableWidget.item(i,3).text()
             sideSplit = side.split("-")
@@ -559,18 +561,18 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
         self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=h1style, text=self.title.decode('utf-8').upper())
+        h=H(outlinelevel=1, stylename=h1style, text=self.title.upper())
         self.textdoc.text.addElement(h)
-        h=H(outlinelevel=1, stylename=h1style, text=self.title2.decode('utf-8').upper())
-        self.textdoc.text.addElement(h)
-
-        h=H(outlinelevel=1, stylename=h1style2, text=self.superinte.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style, text=self.title2.upper())
         self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=h1style2a, text=self.division.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style2, text=self.superinte)
         self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=addressTitle, text=self.adresstitle.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style2a, text=self.division)
+        self.textdoc.text.addElement(h)
+
+        h=H(outlinelevel=1, stylename=addressTitle, text=self.adresstitle)
         self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
@@ -581,7 +583,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         else:
             subTitle = self.subTitle
 
-        h=H(outlinelevel=1, stylename=h1style3, text=subTitle.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style3, text=subTitle)
         self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
@@ -601,21 +603,21 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         # Create a cell with a negative value. It should show as red.
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Imóvel: " + str(self.denominationAreaImovel).decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Imóvel: " + str(self.denominationAreaImovel), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Proprietário: " + self.proprietarioImovel.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Proprietário: " + self.proprietarioImovel, stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Endereço: " + self.adressImovel.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Endereço: " + self.adressImovel, stylename=texttable))
         tr.addElement(cell)
 
         # Create a column (same as <col> in HTML) Make all cells in column default to currency
@@ -626,11 +628,11 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         table.addElement(tr)
         # Create a cell with a negative value. It should show as red.
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Município/UF: " + self.cityImovel.decode('utf-8') + '/' + self.ufImovel.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Município/UF: " + self.cityImovel + '/' + self.ufImovel, stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Matrícula: " + self.matricula.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Matrícula: " + self.matricula, stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
@@ -641,7 +643,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text="NBP: " + self.nbpImovel.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text="NBP: " + self.nbpImovel, stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
@@ -652,18 +654,18 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"RIP: " + self.ripEdit.text().decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"RIP: " + self.ripEdit.text(), stylename=texttable))
         tr.addElement(cell)
 
         tr = TableRow()
         table.addElement(tr)
 
         cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Comarca: " + self.comarca.decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Comarca: " + self.comarca, stylename=texttable))
         tr.addElement(cell)
 
         cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Código INCRA: " + self.codIncraEdit.text().decode('utf-8'), stylename=texttable))
+        cell.addElement(P(text=u"Código INCRA: " + self.codIncraEdit.text(), stylename=texttable))
         tr.addElement(cell)
 
         self.textdoc.text.addElement(table)
@@ -671,7 +673,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
         self.textdoc.text.addElement(h)
 
-        h=H(outlinelevel=1, stylename=h1style4, text='DESCRIÇÃO'.decode('utf-8'))
+        h=H(outlinelevel=1, stylename=h1style4, text='DESCRIÇÃO')
         self.textdoc.text.addElement(h)
 
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
@@ -718,7 +720,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
         rowCount = self.tableWidget.rowCount()
 
-        for i in xrange(0,rowCount):
+        for i in range(0,rowCount):
             side = self.tableWidget.item(i,3).text()
             sideSplit = side.split("-")
             if self.tableWidget.item(i,7).text():
@@ -792,7 +794,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             rowCount = self.tableWidget.rowCount()
             itemPrev =''
 
-            for i in xrange(0,rowCount):
+            for i in range(0,rowCount):
                 side = self.tableWidget.item(i,3).text()
                 sideSplit = side.split("-")
 
@@ -844,7 +846,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                         description.addText(" , ")
                         description.addText("localizada em " + self.localRbmcEdit.text()+", ")
 
-                    sp = self.projectionEdit.text().decode("utf-8").split(" ")[3]
+                    sp = self.projectionEdit.text().split(" ")[3]
                     #print "tai: " + sp
                     description.addText(" e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central ")
                     description.addElement(Span(stylename=boldstyle, text=self.meridianoEdit.text()))
@@ -883,7 +885,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         rowCount = self.tableWidget.rowCount()
         itemPrev =''
 
-        for i in xrange(0,rowCount):
+        for i in range(0,rowCount):
             side = self.tableWidget.item(i,3).text()
             sideSplit = side.split("-")
 
@@ -924,7 +926,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
                     ptex += " , "
                     ptex +="localizada em " + self.localRbmcEdit.text()+", "
 
-                sp = self.projectionEdit.text().decode("utf-8").split(" ")[3]
+                sp = self.projectionEdit.text().split(" ")[3]
                 ptex += " e encontram-se representadas no sistema UTM, referenciadas ao Meridiano Central "
                 ptex += '<font size=11 name="Times-Bold"> %s </font>' %self.meridianoEdit.text().replace('.', ',')
                 ptex += ", Fuso " + '<font size=11 name="Times-Bold"> %s </font>' %str(sp)

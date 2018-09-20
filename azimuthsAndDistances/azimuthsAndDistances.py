@@ -83,7 +83,7 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
 
     def setClockWiseRotation(self, points):
         sum = 0
-        for i in xrange(len(points) - 1):
+        for i in range(len(points) - 1):
             sum += (points[i+1].x() - points[i].x())*(points[i+1].y() + points[i].y())
 
         if sum > 0:
@@ -109,7 +109,7 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
             QMessageBox.information(self.iface.mainWindow(), self.tr("Warning!"), self.tr("Click on calculate button first to generate the needed data."))
         else:
             confrontingList = list()
-            for i in xrange(self.tableWidget.rowCount()):
+            for i in range(self.tableWidget.rowCount()):
                 item = self.tableWidget.item(i, 7)
                 confrontingList.append(item.text())
 
@@ -119,9 +119,9 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
     def isValidType(self):
         """Verifies the geometry type.
         """
-        if self.geom.isMultipart():
-            QMessageBox.information(self.iface.mainWindow(), self.tr("Warning!"), self.tr("The limit of a patrimonial area must be a single part geometry."))
-            return False
+        #if self.geom.isMultipart():
+        #    QMessageBox.information(self.iface.mainWindow(), self.tr("Warning!"), self.tr("The limit of a patrimonial area must be a single part geometry."))
+        #    return False
 
         #if self.geom.type() == QGis.Line:
         if self.geom.type() == QgsWkbTypes.LineGeometry:
@@ -143,7 +143,7 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
         """
         self.perimeter = 0
         self.distancesAndAzimuths = list()
-        for i in xrange(0,len(self.points)-1):
+        for i in range(0,len(self.points)-1):
             before = self.points[i]
             after = self.points[i+1]
             distance = math.sqrt(before.sqrDist(after))
@@ -177,7 +177,7 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
 
         self.tableWidget.setRowCount(len(distancesAndAzimuths))
 
-        for i in xrange(0,len(distancesAndAzimuths)):
+        for i in range(0,len(distancesAndAzimuths)):
             azimuth = self.dd2dms(distancesAndAzimuths[i][1])
             realAzimuth = self.dd2dms(distancesAndAzimuths[i][1] + convergence)
 
