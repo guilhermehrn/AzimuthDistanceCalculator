@@ -28,17 +28,10 @@ import locale
 from builtins import str
 from builtins import range
 
-#from PyQt4 import uic
-#from PyQt4.QtCore import QFile, QIODevice
-#from PyQt4.QtGui import QFileDialog, QMessageBox, QDialog
-#from PyQt4.QtXml import QDomDocument
-
-
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QFile, QIODevice
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox, QDialog
 from qgis.PyQt.QtXml import QDomDocument
-
 
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT, TA_RIGHT
 from reportlab.lib.pagesizes import letter
@@ -90,71 +83,29 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         self.projectionEdit.setText(crsDescription.split('/')[-1])
         self.datumEdit.setText(crsDescription.split('/')[0])
 
-
-
         self.FULL_MONTHS = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro', 'outubro','novembro','dezembro']
         self.pathlogo = os.path.dirname(__file__)
         self.logo = os.path.join(self.pathlogo, 'templates/template_memorial_pdf/rep_of_brazil2.jpg')
         self.formattedTime = date.today().timetuple()
         self.subTitle = 'Memorial Descritivo'
 
-        # #dados do orgão expeditor
-        # self.title = self.OrgaoExpeditorEdit.text()
-        # self.title2= self.secretariaEdit.text()
-        # self.superinte = self.superintenciaEdit.text()
-        # self.division = self.divisaoEdit.text()
-        # self.adresstitle = self.enderecoOrgaoEdit.text()
-        # self.numberControl = self.numMemorialEdit.text()
-        # self.numberSei = self.numeroSeiEdit.text()
-        #
-        # #dados do imovel
-        # self.denominationAreaImovel = self.imovelEdit.text()
-        # self.proprietarioImovel = self.proprietarioEdit.text()
-        # self.adressImovel = self.enderecoEdit.text()
-        # self.cityImovel = self.municipioEdit.text()
-        # self.ufImovel = self.ufEdit.text()
-        # self.comarca = self.comarcaEdit.text()
-        # self.matricula = self.matriculaEdit.text()
-        # self.ripImovel = self.ripEdit.text()
-        # self.nbpImovel = self.nbpEdit.text()
-        # self.codeIncra = self.codIncraEdit.text()
-        # self.plaintCor = self.plantaCorrespondenteEdit.text()
-        # self.kappa = float(self.kappaEdit.text())
-        # self.geomPerimeter = self.geomPerimeter/self.kappa
-        # self.geomArea = self.geomArea/(self.kappa*self.kappa)
-        # self.projection = self.projectionEdit.text()
-        # self.meridianCenter=self.meridianoEdit.text()
-        # self.datum = self.datumEdit.text()
-        # self.perimeter = "%0.2f"%(geomPerimeter)
-        # self.areaMetroQuad = "%0.2f"%(geomArea)
-        #
-        # #dados do Responsavel tecnico
-        # self.responsibletecName = self.autorEdit.text()
-        # self.officeResponsible = self.officeResponsibleEdit.text()
-        # self.addressBrCityDoc= self.mucipioResponsavelEdit.text()
-        # self.tipeIdResponsible = self.creaCau.currentText()
-        # self.identification = self.creaEdit.text()
-
     def setDirectory(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Directory")
         self.folderEdit.setText(folder)
 
-
     def closeWindows(self):
         self.close()
-
 
     def copyAndRenameFiles(self):
         currentPath = os.path.dirname(__file__)
         templatePath = os.path.join(currentPath, "templates")
         simpleMemorialTemplate = os.path.join(templatePath, "template_sintetico.html")
         areaTemplate = os.path.join(templatePath, "template_area.csv")
-
         nameImovel= self.imovelEdit.text()
         prevNameFile = nameImovel.replace(" ", "_")
-
         folder=''
         folder = self.folderEdit.text()
+
         if folder =='':
             QMessageBox.information(self, self.tr('Attention!'), self.tr('A directory should be selected!'))
         else:
@@ -706,7 +657,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
     def getDescription(self):
         description = str()
-        description += "O imóvel descrito abaixo corresponde um de" + self.areaMetroQuad + "m², localizado à" + self.adressImovel + ", no município de" + self.cityImovel +"/" + self.ufImovel + "representado na planta" + self.plaintCor + ", processo SEI: " + self.numberSei+ "."
+        description += "O imóvel descrito abaixo corresponde a terreno um de" + self.areaMetroQuad + "m², localizado à" + self.adressImovel + ", no município de" + self.cityImovel +"/" + self.ufImovel + "representado na planta" + self.plaintCor + ", processo SEI: " + self.numberSei+ "."
         description += "\n"
         description += "Inicia-se a descrição deste perímetro no vértice "+self.tableWidget.item(0,0).text()+", de coordenadas "
         description += "N "+self.tableWidget.item(0,2).text()+" m e "
@@ -762,7 +713,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
 
             description = P(stylename=self.bodystyle)
-            description.addText("O imóvel descrito abaixo corresponde um terreno de " + self.areaMetroQuad.replace('.', ',') + " m², localizado à " + self.adressImovel + ", no município de " + self.cityImovel +"/" + self.ufImovel + ", representado na planta " + self.plaintCor + ", processo SEI: " + self.numberSei)
+            description.addText("O imóvel descrito abaixo corresponde a um terreno de " + self.areaMetroQuad.replace('.', ',') + " m², localizado à " + self.adressImovel + ", no município de " + self.cityImovel +"/" + self.ufImovel + ", representado na planta " + self.plaintCor + ", processo SEI: " + self.numberSei)
 
             if self.codIncraEdit.text():
                 description.addText(", código INCRA "+ self.codIncraEdit.text()+ ".")
@@ -869,7 +820,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
 
     def insertDescriptionPDF(self):
         #locale.setlocale(locale.LC_ALL, ("pt_BR",""))
-        ptex = "O imóvel descrito abaixo corresponde um terreno de " + self.areaMetroQuad.replace('.', ',') + " m², localizado à " + self.adressImovel + ", no município de " + self.cityImovel +"/" + self.ufImovel + ", representado na planta " + self.plaintCor + ", processo SEI: " + self.numberSei
+        ptex = "O imóvel descrito abaixo corresponde a um terreno de " + self.areaMetroQuad.replace('.', ',') + " m², localizado à " + self.adressImovel + ", no município de " + self.cityImovel +"/" + self.ufImovel + ", representado na planta " + self.plaintCor + ", processo SEI: " + self.numberSei
 
         if self.codIncraEdit.text():
             ptex += ", código INCRA "+ self.codIncraEdit.text()+ "."
