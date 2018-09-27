@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AzimuthDistanceCalculator</class>
- <widget class="QDialog" name="AzimuthDistanceCalculator">
+ <class>AzimuthDistanceCalculatorspu</class>
+ <widget class="QDialog" name="AzimuthDistanceCalculatorspu">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>AzimuthDistanceCalculator</string>
+   <string>Azimuth and Distance Calculator for SPU</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="4" column="0">
@@ -82,7 +82,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>AzimuthDistanceCalculator</receiver>
+   <receiver>AzimuthDistanceCalculatorspu</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -98,7 +98,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>AzimuthDistanceCalculator</receiver>
+   <receiver>AzimuthDistanceCalculatorspu</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

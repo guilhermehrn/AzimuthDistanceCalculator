@@ -88,7 +88,7 @@ class AzimuthDistanceCalculator (object):
         # Create action that will start plugin configuration
         self.action = QAction(
             QIcon(":/plugins/azimuthdistancecalculatorspu/north.png"),
-            self.tr("SPU Calculator"), self.iface.mainWindow())
+            self.tr("Azimuth and Distance Calculator for SPU"), self.iface.mainWindow())
         # connect the action to the run method
         self.action.triggered.connect(self.run)
 
