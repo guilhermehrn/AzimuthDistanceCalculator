@@ -53,12 +53,14 @@ tags
 # =========================
 .directory
 ENV/
+data/
 
 # IDE
 # =========================
 .project
 .pydevproject
 .vscode/
+.idea/
 
 #DSGTools styles
 # =========================
