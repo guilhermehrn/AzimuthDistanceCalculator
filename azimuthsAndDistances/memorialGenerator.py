@@ -248,16 +248,16 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         for i in range(0,rowCount):
             lineElement = tempDoc.createElement("tr")
 
-            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,0).text(), 0, 0))
+            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,0).text().replace('.', ','), 0, 0))
 
-            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,1).text(), 0, 0))
-            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,2).text(), 0, 0))
+            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,1).text().replace('.', ','), 0, 0))
+            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,2).text().replace('.', ','), 0, 0))
 
-            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,3).text(), 0, 0))
+            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,3).text().replace('.', ','), 0, 0))
 
-            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,4).text(), 0, 0))
-            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,5).text(), 0, 0))
-            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,6).text(), 0, 0))
+            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,4).text().replace('.', ','), 0, 0))
+            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,5).text().replace('.', ','), 0, 0))
+            lineElement.appendChild(self.createCellElement(tempDoc, self.tableWidget.item(i,6).text().replace('.', ','), 0, 0))
 
             table.appendChild(lineElement)
 
@@ -276,11 +276,11 @@ class MemorialGenerator(QDialog, FORM_CLASS):
             side = self.tableWidget.item(i,3).text()
             sideSplit = side.split("-")
             line += '"'+ sideSplit[0]+'";"'+sideSplit[1]+'";'
-            line += self.tableWidget.item(i,1).text()+";"
-            line += self.tableWidget.item(i,2).text()+";"
-            line += self.tableWidget.item(i,4).text()+";"
-            line += self.tableWidget.item(i,5).text()+";"
-            line += self.tableWidget.item(i,6).text()+"\n"
+            line += self.tableWidget.item(i,1).text().replace('.', ',') +";"
+            line += self.tableWidget.item(i,2).text().replace('.', ',') +";"
+            line += self.tableWidget.item(i,4).text().replace('.', ',') +";"
+            line += self.tableWidget.item(i,5).text().replace('.', ',') +";"
+            line += self.tableWidget.item(i,6).text().replace('.', ',') +"\n"
 
             newData += line
 
@@ -482,6 +482,12 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         s.addElement(bodystyle4)
         self.textdoc.automaticstyles.addElement(bodystyle4)
 
+        styleHeader = Style(name="styleHeader", family="paragraph")
+        styleHeader.addElement(TextProperties(attributes={'fontsize':"11pt",'fontweight':"bold", 'fontfamily':"Times New Roman"}))
+        styleHeader.addElement(ParagraphProperties(attributes={"textalign":"left"}))
+        s.addElement(styleHeader)
+        self.textdoc.automaticstyles.addElement(styleHeader)
+
         #imgStile
         imgstyle = Style(name="Mfr1", family="graphic")
         imgprop = GraphicProperties(horizontalrel="paragraph", horizontalpos="center", verticalrel="paragraph-content", verticalpos="top")
@@ -541,85 +547,110 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         self.textdoc.text.addElement(h)
 
         # Create automatic styles for the column widths.
-        widewidth = Style(name="co1", family="table-column")
-        widewidth.addElement(TableColumnProperties(columnwidth="8cm"))
-        self.textdoc.automaticstyles.addElement(widewidth)
+        #widewidth = Style(name="co1", family="table-column")
+        #widewidth.addElement(TableColumnProperties(columnwidth="8cm"))
+        #self.textdoc.automaticstyles.addElement(widewidth)
 
         # Start the table, and describe the columns
-        table = Table(name="Currency colours")
+        #table = Table(name="Currency colours")
 
-        table.addElement(TableColumn(stylename=widewidth, defaultcellstylename="co1"))
-        tr = TableRow()
-        table.addElement(tr)
+        #table.addElement(TableColumn(stylename=widewidth, defaultcellstylename="co1"))
+        #tr = TableRow()
+
+        #table.addElement(tr)
 
         # Create a cell with a negative value. It should show as red.
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Imóvel: " + str(self.denominationAreaImovel), stylename=texttable))
-        tr.addElement(cell)
+        #cell = TableCell(valuetype="text", currency="AUD")
+        #cell.addElement(P(text=u"Imóvel: " + str(self.denominationAreaImovel), stylename=texttable))
+        #tr.addElement(cell)
 
-        tr = TableRow()
-        table.addElement(tr)
+        header = H(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="Imóvel: "))
+        header.addText(str(self.denominationAreaImovel))
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
 
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Proprietário: " + self.proprietarioImovel, stylename=texttable))
-        tr.addElement(cell)
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="Proprietário: "))
+        header.addText(str(self.proprietarioImovel))
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
 
-        tr = TableRow()
-        table.addElement(tr)
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="Endereço: "))
+        header.addText(str(self.adressImovel))
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
 
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Endereço: " + self.adressImovel, stylename=texttable))
-        tr.addElement(cell)
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="Endereço: "))
+        header.addText(str(self.adressImovel))
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
 
-        # Create a column (same as <col> in HTML) Make all cells in column default to currency
-        table.addElement(TableColumn(numbercolumnsrepeated=0, stylename=widewidth, defaultcellstylename="co1"))
-        table.addElement(TableColumn(numbercolumnsrepeated=1, stylename=widewidth, defaultcellstylename="co1"))
-        # Create a row (same as <tr> in HTML)
-        tr = TableRow()
-        table.addElement(tr)
-        # Create a cell with a negative value. It should show as red.
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Município/UF: " + self.cityImovel + '/' + self.ufImovel, stylename=texttable))
-        tr.addElement(cell)
+        #tr = TableRow()
+        #table.addElement(tr)
 
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Matrícula: " + self.matricula, stylename=texttable))
-        tr.addElement(cell)
+        #cell = TableCell(valuetype="text", currency="AUD")
+        #cell.addElement(P(text=u"Proprietário: " + self.proprietarioImovel, stylename=texttable))
+        #tr.addElement(cell)
 
-        tr = TableRow()
-        table.addElement(tr)
+        #tr = TableRow()
+        #table.addElement(tr)
 
-        cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Perímetro (m): " + str(self.perimeter).replace('.', ','), stylename=texttable))
-        tr.addElement(cell)
-
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text="NBP: " + self.nbpImovel, stylename=texttable))
-        tr.addElement(cell)
-
-        tr = TableRow()
-        table.addElement(tr)
-
-        cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Área (m²): " + str(self.areaMetroQuad).replace('.', ','), stylename=texttable))
-        tr.addElement(cell)
-
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"RIP: " + self.ripEdit.text(), stylename=texttable))
-        tr.addElement(cell)
-
-        tr = TableRow()
-        table.addElement(tr)
-
-        cell = TableCell(valuetype="text", currency="AUD")
-        cell.addElement(P(text=u"Comarca: " + self.comarca, stylename=texttable))
-        tr.addElement(cell)
-
-        cell = TableCell(valuetype="text", currency="AUD", value="123")
-        cell.addElement(P(text=u"Código INCRA: " + self.codIncraEdit.text(), stylename=texttable))
-        tr.addElement(cell)
-
-        self.textdoc.text.addElement(table)
+        # cell = TableCell(valuetype="text", currency="AUD")
+        # cell.addElement(P(text=u"Endereço: " + self.adressImovel, stylename=texttable))
+        # tr.addElement(cell)
+        #
+        # # Create a column (same as <col> in HTML) Make all cells in column default to currency
+        # table.addElement(TableColumn(numbercolumnsrepeated=0, stylename=widewidth, defaultcellstylename="co1"))
+        # table.addElement(TableColumn(numbercolumnsrepeated=1, stylename=widewidth, defaultcellstylename="co1"))
+        # # Create a row (same as <tr> in HTML)
+        # tr = TableRow()
+        # table.addElement(tr)
+        # # Create a cell with a negative value. It should show as red.
+        # cell = TableCell(valuetype="text", currency="AUD")
+        # cell.addElement(P(text=u"Município/UF: " + self.cityImovel + '/' + self.ufImovel, stylename=texttable))
+        # tr.addElement(cell)
+        #
+        # cell = TableCell(valuetype="text", currency="AUD")
+        # cell.addElement(P(text=u"Matrícula: " + self.matricula, stylename=texttable))
+        # tr.addElement(cell)
+        #
+        # tr = TableRow()
+        # table.addElement(tr)
+        #
+        # cell = TableCell(valuetype="text", currency="AUD", value="123")
+        # cell.addElement(P(text=u"Perímetro (m): " + str(self.perimeter).replace('.', ','), stylename=texttable))
+        # tr.addElement(cell)
+        #
+        # cell = TableCell(valuetype="text", currency="AUD")
+        # cell.addElement(P(text="NBP: " + self.nbpImovel, stylename=texttable))
+        # tr.addElement(cell)
+        #
+        # tr = TableRow()
+        # table.addElement(tr)
+        #
+        # cell = TableCell(valuetype="text", currency="AUD", value="123")
+        # cell.addElement(P(text=u"Área (m²): " + str(self.areaMetroQuad).replace('.', ','), stylename=texttable))
+        # tr.addElement(cell)
+        #
+        # cell = TableCell(valuetype="text", currency="AUD")
+        # cell.addElement(P(text=u"RIP: " + self.ripEdit.text(), stylename=texttable))
+        # tr.addElement(cell)
+        #
+        # tr = TableRow()
+        # table.addElement(tr)
+        #
+        # cell = TableCell(valuetype="text", currency="AUD")
+        # cell.addElement(P(text=u"Comarca: " + self.comarca, stylename=texttable))
+        # tr.addElement(cell)
+        #
+        # cell = TableCell(valuetype="text", currency="AUD", value="123")
+        # cell.addElement(P(text=u"Código INCRA: " + self.codIncraEdit.text(), stylename=texttable))
+        # tr.addElement(cell)
+        #
+        # self.textdoc.text.addElement(table)
 
         h=H(outlinelevel=1, stylename=self.bodystyle, text='\n')
         self.textdoc.text.addElement(h)
