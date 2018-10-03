@@ -564,7 +564,7 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         #cell.addElement(P(text=u"Imóvel: " + str(self.denominationAreaImovel), stylename=texttable))
         #tr.addElement(cell)
 
-        header = H(stylename=self.bodystyle)
+        header = P(stylename=self.bodystyle)
         header.addElement(Span(stylename=styleHeader, text="Imóvel: "))
         header.addText(str(self.denominationAreaImovel))
         header.addText("\n")
@@ -583,10 +583,55 @@ class MemorialGenerator(QDialog, FORM_CLASS):
         self.textdoc.text.addElement(header)
 
         header = P(stylename=self.bodystyle)
-        header.addElement(Span(stylename=styleHeader, text="Endereço: "))
-        header.addText(str(self.adressImovel))
+        header.addElement(Span(stylename=styleHeader, text="Município/UF: "))
+        header.addText(str(self.cityImovel + '/' + self.ufImovel))
         header.addText("\n")
         self.textdoc.text.addElement(header)
+
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="Matrícula: "))
+        header.addText(str(self.matricula))
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
+
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="Perímetro (m): "))
+        header.addText(self.cityImovel + '/' + self.ufImovel)
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
+
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="NBP: " ))
+        header.addText(self.nbpImovel)
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
+
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="Área (m²): " ))
+        header.addText(self.nbpImovel)
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
+
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="RIP: " ))
+        header.addText(self.ripEdit.text())
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
+
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="Comarca: "))
+        header.addText(self.comarca)
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
+
+        header = P(stylename=self.bodystyle)
+        header.addElement(Span(stylename=styleHeader, text="Código INCRA: " ))
+        header.addText(self.codIncraEdit.text())
+        header.addText("\n")
+        self.textdoc.text.addElement(header)
+
+
+
 
         #tr = TableRow()
         #table.addElement(tr)

@@ -175,37 +175,74 @@ class AzimuthsAndDistancesDialog(QDialog, FORM_CLASS):
         if self.points[0] == self.points[len(self.points) - 1]:
             isClosed = True
 
-        self.tableWidget.setRowCount(len(distancesAndAzimuths))
 
-        for i in range(0,len(distancesAndAzimuths)):
-            azimuth = self.dd2dms(distancesAndAzimuths[i][1])
-            realAzimuth = self.dd2dms(distancesAndAzimuths[i][1] + convergence)
+        if self.tableWidget.rowCount() == 0:
+            self.tableWidget.setRowCount(len(distancesAndAzimuths))
 
-            itemVertex = QTableWidgetItem("P"+str(i))
-            self.tableWidget.setItem(i, 0, itemVertex)
-            e = Decimal(self.points[i].x()).quantize(q)
-            itemE = QTableWidgetItem(str(e))
-            self.tableWidget.setItem(i, 1, itemE)
-            n = Decimal(self.points[i].y()).quantize(q)
-            itemN = QTableWidgetItem(str(n))
-            self.tableWidget.setItem(i, 2, itemN)
+            for i in range(0,len(distancesAndAzimuths)):
+                azimuth = self.dd2dms(distancesAndAzimuths[i][1])
+                realAzimuth = self.dd2dms(distancesAndAzimuths[i][1] + convergence)
 
-            if (i == len(distancesAndAzimuths) - 1) and isClosed:
-                itemSide = QTableWidgetItem("P"+str(i)+"-P0")
-                self.tableWidget.setItem(i, 3, itemSide)
-            else:
-                itemSide = QTableWidgetItem("P"+str(i)+"-P"+str(i+1))
-                self.tableWidget.setItem(i, 3, itemSide)
+                itemVertex = QTableWidgetItem("P"+str(i))
+                self.tableWidget.setItem(i, 0, itemVertex)
+                e = Decimal(self.points[i].x()).quantize(q)
+                itemE = QTableWidgetItem(str(e))
+                self.tableWidget.setItem(i, 1, itemE)
+                n = Decimal(self.points[i].y()).quantize(q)
+                itemN = QTableWidgetItem(str(n))
+                self.tableWidget.setItem(i, 2, itemN)
 
-            itemAz = QTableWidgetItem(azimuth)
-            self.tableWidget.setItem(i, 4, itemAz)
-            itemRealAz = QTableWidgetItem(realAzimuth)
-            self.tableWidget.setItem(i, 5, itemRealAz)
-            dist = "%0.2f"%(distancesAndAzimuths[i][0])
-            itemDistance = QTableWidgetItem(dist)
-            self.tableWidget.setItem(i, 6, itemDistance)
-            itemConfronting = QTableWidgetItem("")
-            self.tableWidget.setItem(i, 7, itemConfronting)
+                if (i == len(distancesAndAzimuths) - 1) and isClosed:
+                    itemSide = QTableWidgetItem("P"+str(i)+"-P0")
+                    self.tableWidget.setItem(i, 3, itemSide)
+                else:
+                    itemSide = QTableWidgetItem("P"+str(i)+"-P"+str(i+1))
+                    self.tableWidget.setItem(i, 3, itemSide)
+
+                itemAz = QTableWidgetItem(azimuth)
+                self.tableWidget.setItem(i, 4, itemAz)
+                itemRealAz = QTableWidgetItem(realAzimuth)
+                self.tableWidget.setItem(i, 5, itemRealAz)
+                dist = "%0.2f"%(distancesAndAzimuths[i][0])
+                itemDistance = QTableWidgetItem(dist)
+                self.tableWidget.setItem(i, 6, itemDistance)
+                itemConfronting = QTableWidgetItem("")
+                self.tableWidget.setItem(i, 7, itemConfronting)
+        else:
+
+            for i in range(0,len(distancesAndAzimuths)):
+                azimuth = self.dd2dms(distancesAndAzimuths[i][1])
+                realAzimuth = self.dd2dms(distancesAndAzimuths[i][1] + convergence)
+
+                itemVertex = QTableWidgetItem("P"+str(i))
+                self.tableWidget.setItem(i, 0, itemVertex)
+                e = Decimal(self.points[i].x()).quantize(q)
+                itemE = QTableWidgetItem(str(e))
+                self.tableWidget.setItem(i, 1, itemE)
+                n = Decimal(self.points[i].y()).quantize(q)
+                itemN = QTableWidgetItem(str(n))
+                self.tableWidget.setItem(i, 2, itemN)
+
+                if (i == len(distancesAndAzimuths) - 1) and isClosed:
+                    itemSide = QTableWidgetItem("P"+str(i)+"-P0")
+                    self.tableWidget.setItem(i, 3, itemSide)
+                else:
+                    itemSide = QTableWidgetItem("P"+str(i)+"-P"+str(i+1))
+                    self.tableWidget.setItem(i, 3, itemSide)
+
+                itemAz = QTableWidgetItem(azimuth)
+                self.tableWidget.setItem(i, 4, itemAz)
+                itemRealAz = QTableWidgetItem(realAzimuth)
+                self.tableWidget.setItem(i, 5, itemRealAz)
+                dist = "%0.2f"%(distancesAndAzimuths[i][0])
+                itemDistance = QTableWidgetItem(dist)
+                self.tableWidget.setItem(i, 6, itemDistance)
+                itemConfronting = QTableWidgetItem("")
+
+                # if str(self.tableWidget.item(i, 7).text()) != "":
+                #     print (str(self.tableWidget.item(i, 7).text()))
+                #     self.tableWidget.setItem(i, 7, itemConfronting)
+
 
     def clearTable(self):
         self.tableWidget.setRowCount(0)
